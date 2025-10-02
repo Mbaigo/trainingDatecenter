@@ -9,7 +9,7 @@ import java.util.Set;
 @Entity @AllArgsConstructor @Getter @Setter @NoArgsConstructor @Builder
 public class Learner implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String firstName;
     private String lastName;
     private String phoneNumber;

@@ -9,8 +9,8 @@ import java.util.List;
 @Entity
 @AllArgsConstructor @NoArgsConstructor @Setter @Getter @Builder
 public class Trainer implements Serializable {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String firstName;
     private String lastName;
     private String phoneNumber;

@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/training_db
-    username: postgres
-    #password:
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:mysql://localhost:3306/training_db  # Remplacez le port et le nom de la base de données selon vos besoins
+    username: root  # Remplacez par votre nom d'utilisateur MySQL
+    password: AbbayngarFils1!  # Définissez votre mot de passe MySQL
+    driver-class-name: com.mysql.cj.jdbc.Driver  # Le driver MySQL
     hikari:
       connection-timeout: 30000
       maximum-pool-size: 10
@@ -13,7 +13,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect  # Dialecte MySQL (version 8)
         jdbc:
           time_zone: UTC
     show-sql: true
@@ -21,7 +21,7 @@ spring:
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
-    date-format: json.dateformat.custom
+    date-format: "dd/MM/yyyy"  # Format de date : jour/mois/année
     locale: fr_FR
   profiles:
     active: production
@@ -36,6 +36,6 @@ logging:
     org.springframework: INFO
     org.hibernate.SQL: DEBUG
 
-# Flyway / Liquibase options (si utilis�es)
+# Flyway / Liquibase options (si utilisés)
 # spring.flyway.enabled: true
 # spring.flyway.locations: classpath:db/migration

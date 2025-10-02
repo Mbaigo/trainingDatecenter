@@ -11,6 +11,8 @@ public class Training {
     private String title;
     private String contenuVideoUrl; // URL ou chemin vers la vidéo
     private LocalDateTime datePublication;
+    private Boolean status;
+    private LocalDateTime createdAt;
     @ManyToOne
     private Trainer auteur; // association vers la classe Auteur
 }
