@@ -10,7 +10,7 @@ spring:
       idle-timeout: 600000
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect  # Dialecte MySQL (version 8)
