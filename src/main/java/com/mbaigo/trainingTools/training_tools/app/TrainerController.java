@@ -1,6 +1,6 @@
 package com.mbaigo.trainingTools.training_tools.app;
 
-import com.mbaigo.trainingTools.training_tools.beans.Trainer;
+import com.mbaigo.trainingTools.training_tools.beans.domaine.Trainer;
 import com.mbaigo.trainingTools.training_tools.beans.dto.TrainerDto;
 import com.mbaigo.trainingTools.training_tools.services.TrainerService;
 import org.springframework.http.HttpStatus;
@@ -26,11 +26,11 @@ public class TrainerController {
      * Corps: JSON représentant un Trainer
      */
     @PostMapping
-    public ResponseEntity<TrainerDto> addTrainer(@RequestBody TrainerDto trainer) {
+    public ResponseEntity<Trainer> addTrainer(@RequestBody Trainer trainer) {
         if (trainer == null) {
             return ResponseEntity.badRequest().build();
         }
-        TrainerDto created = trainerService.save(trainer);
+        Trainer created = trainerService.save(trainer);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
@@ -39,8 +39,8 @@ public class TrainerController {
      * Endpoint: GET /trainers
      */
     @GetMapping
-    public ResponseEntity<List<TrainerDto>> getAllTrainers() {
-        List<TrainerDto> trainers = trainerService.findAll();
+    public ResponseEntity<List<Trainer>> getAllTrainers() {
+        List<Trainer> trainers = trainerService.findAll();
         if (trainers == null || trainers.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -48,22 +48,22 @@ public class TrainerController {
     }
 
     @GetMapping("/by-id")
-    public Optional<TrainerDto> getById(@RequestParam Long id) {
+    public Optional<Trainer> getById(@RequestParam Long id) {
         return trainerService.findById(id);
     }
 
     @GetMapping("/by-firstname")
-    public List<TrainerDto> getByFirstName(@RequestParam String firstName) {
+    public List<Trainer> getByFirstName(@RequestParam String firstName) {
         return trainerService.findByFirstNameIgnoreCase(firstName);
     }
 
     @GetMapping("/by-lastname")
-    public List<TrainerDto> getByLastName(@RequestParam String lastName) {
+    public List<Trainer> getByLastName(@RequestParam String lastName) {
         return trainerService.findByLastNameIgnoreCase(lastName);
     }
 
     @GetMapping("/by-mail")
-    public Optional<TrainerDto> getByMail(@RequestParam String mailAdress) {
+    public Optional<Trainer> getByMail(@RequestParam String mailAdress) {
         return trainerService.findByMailAdress(mailAdress);
     }
 

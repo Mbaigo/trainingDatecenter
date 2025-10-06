@@ -1,6 +1,6 @@
 package com.mbaigo.trainingTools.training_tools.services.impl;
 
-import com.mbaigo.trainingTools.training_tools.beans.Trainer;
+import com.mbaigo.trainingTools.training_tools.beans.domaine.Trainer;
 import com.mbaigo.trainingTools.training_tools.beans.dto.TrainerDto;
 import com.mbaigo.trainingTools.training_tools.config.mapper.impl.TrainerMapper;
 import com.mbaigo.trainingTools.training_tools.dao.dao.factory.daoImpl.TrainerRepository;
@@ -27,16 +27,16 @@ public class TrainerServiceImpl implements TrainerService {
      * @return
      */
     @Override
-    public TrainerDto save(TrainerDto trainer) {
-        return mapper.toDto(repository.save(mapper.toEntity(trainer)));
+    public Trainer save(Trainer trainer) {
+        return repository.save(trainer);
     }
 
     /**
      * @return 
      */
     @Override
-    public List<TrainerDto> findAll() {
-        return mapper.toDtoList(repository.findAll());
+    public List<Trainer> findAll() {
+        return repository.findAll();
     }
 
     /**
@@ -44,9 +44,9 @@ public class TrainerServiceImpl implements TrainerService {
      * @return
      */
     @Override
-    public Optional<TrainerDto> findById(Long id) {
+    public Optional<Trainer> findById(Long id) {
         return Optional.ofNullable(repository
-                .findById(id).map(mapper::toDto)
+                .findById(id)
                 .orElseThrow(() -> new TrainingApiException("Trainer not found by id: " + id, 404, "TrainerService.findById")));
     }
 
@@ -55,10 +55,9 @@ public class TrainerServiceImpl implements TrainerService {
      * @return
      */
     @Override
-    public List<TrainerDto> findByFirstNameIgnoreCase(String firstName) {
+    public List<Trainer> findByFirstNameIgnoreCase(String firstName) {
         return repository
-                .findByFirstNameIgnoreCase(firstName.trim())
-                .stream().map(mapper::toDto).toList();
+                .findByFirstNameIgnoreCase(firstName.trim());
     }
 
     /**
@@ -66,10 +65,9 @@ public class TrainerServiceImpl implements TrainerService {
      * @return
      */
     @Override
-    public List<TrainerDto> findByLastNameIgnoreCase(String lastName) {
+    public List<Trainer> findByLastNameIgnoreCase(String lastName) {
         return repository
-                .findByLastNameIgnoreCase(lastName.trim())
-                .stream().map(mapper::toDto).toList();
+                .findByLastNameIgnoreCase(lastName.trim());
     }
 
     /**
@@ -77,8 +75,8 @@ public class TrainerServiceImpl implements TrainerService {
      * @return
      */
     @Override
-    public Optional<TrainerDto> findByPhoneNumber(String phoneNumber) {
-        return Optional.ofNullable(repository.findByPhoneNumber(phoneNumber).map(mapper::toDto)
+    public Optional<Trainer> findByPhoneNumber(String phoneNumber) {
+        return Optional.ofNullable(repository.findByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new TrainingApiException("Trainer not found by phoneNumber : " + phoneNumber, 404, "TrainerService.findByPhoneNumber")));
     }
 
@@ -87,9 +85,9 @@ public class TrainerServiceImpl implements TrainerService {
      * @return
      */
     @Override
-    public Optional<TrainerDto> findByMailAdress(String email) {
+    public Optional<Trainer> findByMailAdress(String email) {
         return Optional.ofNullable(repository
-                .findByMailAdress(email).map(mapper::toDto)
+                .findByMailAdress(email)
                 .orElseThrow(() -> new EntityNotFoundException("Trainer inexistant " + email)));
     }
 }

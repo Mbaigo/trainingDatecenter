@@ -1,8 +1,6 @@
 package com.mbaigo.trainingTools.training_tools.dao.dao.factory.daoImpl;
 
-import com.mbaigo.trainingTools.training_tools.beans.Trainer;
-import com.mbaigo.trainingTools.training_tools.beans.dto.TrainerDto;
-import com.mbaigo.trainingTools.training_tools.dao.dao.factory.GenerikRepository;
+import com.mbaigo.trainingTools.training_tools.beans.domaine.Trainer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

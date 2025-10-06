@@ -1,6 +1,6 @@
 package com.mbaigo.trainingTools.training_tools.beans.dto;
 
-import com.mbaigo.trainingTools.training_tools.beans.Trainer;
+import com.mbaigo.trainingTools.training_tools.beans.domaine.Trainer;
 
 import java.time.LocalDateTime;
 
