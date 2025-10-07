@@ -13,7 +13,7 @@ public interface TrainerRepository extends JpaRepository<Trainer, Long> {
     List<Trainer> findByFirstNameIgnoreCase(String nom);
     List<Trainer> findByLastNameIgnoreCase(String nom);
     Optional<Trainer> findByPhoneNumber(String nom);
-    Optional<Trainer> findByMailAdress(String email);
+    Optional<Trainer> findByEmail(String email);
 
     // Recherche exact sur prénom et nom, ignore case
     List<Trainer> findByFirstNameIgnoreCaseAndLastNameIgnoreCase(String firstName, String lastName);
@@ -24,6 +24,6 @@ public interface TrainerRepository extends JpaRepository<Trainer, Long> {
     //List<UserSummary> findAllProjectedByStatus(String status);
 
     // JPQL personnalisé
-    @Query("select t from Trainer t where t.mailAdress like %:mail%")
-    List<Trainer> findByEmailContaining(@Param("mailAdress") String mail);
+    @Query("select t from Trainer t where t.email like %:mail%")
+    List<Trainer> findByEmailContaining(@Param("email") String mail);
 }

@@ -86,7 +86,7 @@ public class TrainerServiceImpl implements TrainerService {
     @Override
     public Optional<Trainer> findByMailAdress(String email) {
         return Optional.ofNullable(repository
-                .findByMailAdress(email)
+                .findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Trainer inexistant " + email)));
     }
 }

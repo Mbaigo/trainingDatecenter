@@ -2,8 +2,9 @@ package com.mbaigo.trainingTools.training_tools.config.mapper.jwtConfig;
 
 import com.mbaigo.trainingTools.training_tools.beans.userRole.RefreshToken;
 import com.mbaigo.trainingTools.training_tools.beans.userRole.Utilisateur;
+import com.mbaigo.trainingTools.training_tools.dao.dao.factory.daoImpl.domaine.userRole.RefreshTokenRepository;
 import com.mbaigo.trainingTools.training_tools.dao.dao.factory.daoImpl.domaine.userRole.UtilisateurRepository;
-import com.mbaigo.trainingTools.training_tools.dao.dao.factory.oAuthDao.RefreshTokenRepository;
+
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;

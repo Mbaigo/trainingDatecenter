@@ -17,6 +17,6 @@ public interface LearnerRepository extends JpaRepository<Learner, Long> {
     //List<UserSummary> findAllProjectedByStatus(String status);
 
     // JPQL personnalisé
-    @Query("select l from Learner l where l.mailAdress like %:mailAdress%")
-    List<Learner> findByEmailContaining(@Param("mailAdress") String mail);
+    @Query("select l from Learner l where l.email like %:email%")
+    List<Learner> findByEmailContaining(@Param("email") String mail);
 }
