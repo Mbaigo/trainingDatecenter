@@ -22,14 +22,17 @@ public class Utilisateur {
 
     @Column(nullable = false, unique = true)
     private String email;
-
+    private String username;
     @Column(nullable = false)
-    private String motDePasse;
+    private String password;
+    private boolean enabled = true;
+    private boolean twoFactorEnabled = false;
+    private String secret2FA; // pour TOTP
+
 
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private String mailAdress;
     private String level;
 
     private LocalDateTime dateInscription;

@@ -25,7 +25,7 @@ public class Training {
     private boolean status = false;
 
     @ManyToOne
-    @JoinColumn(name = "Trainer_id")
+    @JoinColumn(name = "trainer")
     private Trainer trainer;
 
     @ManyToOne

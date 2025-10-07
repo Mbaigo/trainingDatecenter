@@ -11,5 +11,5 @@ public class Role {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String nom; // APPRENANT, FORMATEUR, ADMIN
+    private String name; // APPRENANT, FORMATEUR, ADMIN
 }

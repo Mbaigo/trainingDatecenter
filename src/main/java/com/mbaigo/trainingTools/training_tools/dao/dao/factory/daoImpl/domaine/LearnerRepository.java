@@ -1,4 +1,4 @@
-package com.mbaigo.trainingTools.training_tools.dao.dao.factory.daoImpl;
+package com.mbaigo.trainingTools.training_tools.dao.dao.factory.daoImpl.domaine;
 
 import com.mbaigo.trainingTools.training_tools.beans.domaine.Learner;
 import org.springframework.data.jpa.repository.JpaRepository;

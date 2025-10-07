@@ -10,7 +10,7 @@ spring:
       idle-timeout: 600000
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect  # Dialecte MySQL (version 8)
@@ -35,6 +35,12 @@ logging:
   level:
     org.springframework: INFO
     org.hibernate.SQL: DEBUG
+
+jwt:
+  secret: ${JWT_SECRET:ReplaceThisWithLongRandomString}
+  expiration-ms: 900000      # 15 minutes
+  refresh-expiration-ms: 604800000  # 7 days
+
 
 # Flyway / Liquibase options (si utilisés)
 # spring.flyway.enabled: true

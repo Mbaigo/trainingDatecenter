@@ -1,9 +1,8 @@
 package com.mbaigo.trainingTools.training_tools.services.impl;
 
 import com.mbaigo.trainingTools.training_tools.beans.domaine.Trainer;
-import com.mbaigo.trainingTools.training_tools.beans.dto.TrainerDto;
 import com.mbaigo.trainingTools.training_tools.config.mapper.impl.TrainerMapper;
-import com.mbaigo.trainingTools.training_tools.dao.dao.factory.daoImpl.TrainerRepository;
+import com.mbaigo.trainingTools.training_tools.dao.dao.factory.daoImpl.domaine.TrainerRepository;
 import com.mbaigo.trainingTools.training_tools.exception.TrainingApiException;
 import com.mbaigo.trainingTools.training_tools.services.TrainerService;
 import jakarta.persistence.EntityNotFoundException;
