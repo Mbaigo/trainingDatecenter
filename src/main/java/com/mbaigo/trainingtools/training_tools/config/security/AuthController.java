@@ -1,9 +1,10 @@
 package com.mbaigo.trainingtools.training_tools.config.security;
 
-import com.mbaigo.trainingtools.training_tools.beans.user_role.RefreshToken;
-import com.mbaigo.trainingtools.training_tools.beans.user_role.Utilisateur;
-import com.mbaigo.trainingtools.training_tools.dao.dao.factory.daoImpl.domaine.user_role.UtilisateurRepository;
+import com.mbaigo.trainingtools.training_tools.exception.TrainingApiException;
+import com.mbaigo.trainingtools.training_tools.repository.user.UtilisateurRepository;
 import com.mbaigo.trainingtools.training_tools.services.impl.jwt_service.UserPrincipal;
+import com.mbaigo.trainingtools.training_tools.user.RefreshToken;
+import com.mbaigo.trainingtools.training_tools.user.Utilisateur;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +22,8 @@ public class AuthController {
     private final JwtUtil jwtUtil;
     private final UtilisateurRepository userRepo;
     private final RefreshTokenService refreshTokenService;
+    private static String REFRESH_TOKEN="refreshToken";
+    private static String USERNAME="username";
 
     public AuthController(AuthenticationManager authManager, JwtUtil jwtUtil,
                           UtilisateurRepository userRepo, RefreshTokenService refreshTokenService) {
@@ -41,32 +44,32 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String,String> creds) {
         Authentication auth = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(creds.get("username"), creds.get("password"))
+                new UsernamePasswordAuthenticationToken(creds.get(USERNAME), creds.get("password"))
         );
-        Utilisateur user = userRepo.findByUsername(creds.get("username")).get();
+        Utilisateur user = userRepo.findByUsername(creds.get(USERNAME)).get();
         if(user.isTwoFactorEnabled()) {
             // générer challenge TOTP ici → renvoyer "2FA required"
             return ResponseEntity.ok(Map.of("2fa_required", true));
         }
         String token = jwtUtil.generateToken((UserDetails) auth.getPrincipal());
         RefreshToken rt = refreshTokenService.createRefreshToken(user);
-        return ResponseEntity.ok(Map.of("token", token, "refreshToken", rt.getToken()));
+        return ResponseEntity.ok(Map.of("token", token, REFRESH_TOKEN, rt.getToken()));
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(@RequestBody Map<String,String> body) {
-        String requestToken = body.get("refreshToken");
+        String requestToken = body.get(REFRESH_TOKEN);
         return refreshTokenService.findByToken(requestToken)
                 .flatMap(refreshTokenService::verifyExpiration)
                 .map(rt -> {
                     String token = jwtUtil.generateToken(new UserPrincipal(rt.getUser()));
-                    return ResponseEntity.ok(Map.of("token", token, "refreshToken", rt.getToken()));
+                    return ResponseEntity.ok(Map.of("token", token, REFRESH_TOKEN, rt.getToken()));
                 }).orElseThrow(() -> new RuntimeException("Refresh token invalide"));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestBody Map<String,String> body) {
-        Utilisateur user = userRepo.findByUsername(body.get("username"))
+        Utilisateur user = userRepo.findByUsername(body.get(USERNAME))
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
         refreshTokenService.deleteByUser(user);
         return ResponseEntity.ok("Déconnecté avec succès");

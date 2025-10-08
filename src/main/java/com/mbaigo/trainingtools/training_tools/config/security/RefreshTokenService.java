@@ -1,10 +1,9 @@
 package com.mbaigo.trainingtools.training_tools.config.security;
 
-import com.mbaigo.trainingtools.training_tools.beans.user_role.RefreshToken;
-import com.mbaigo.trainingtools.training_tools.beans.user_role.Utilisateur;
-import com.mbaigo.trainingtools.training_tools.dao.dao.factory.daoImpl.domaine.user_role.RefreshTokenRepository;
-import com.mbaigo.trainingtools.training_tools.dao.dao.factory.daoImpl.domaine.user_role.UtilisateurRepository;
 
+import com.mbaigo.trainingtools.training_tools.repository.user.RefreshTokenRepository;
+import com.mbaigo.trainingtools.training_tools.user.RefreshToken;
+import com.mbaigo.trainingtools.training_tools.user.Utilisateur;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -17,12 +16,9 @@ public class RefreshTokenService {
 
     private final RefreshTokenRepository repo;
 
-    private final UtilisateurRepository userRepo;
-
-    public RefreshTokenService(JwtProperties jwtProperties, RefreshTokenRepository repo, UtilisateurRepository userRepo) {
+    public RefreshTokenService(JwtProperties jwtProperties, RefreshTokenRepository repo) {
         this.jwtProperties = jwtProperties;
         this.repo = repo;
-        this.userRepo = userRepo;
     }
 
 

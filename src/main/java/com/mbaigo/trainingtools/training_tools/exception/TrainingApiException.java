@@ -1,10 +1,6 @@
 package com.mbaigo.trainingtools.training_tools.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Getter
 public class TrainingApiException extends RuntimeException{
