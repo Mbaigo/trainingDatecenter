@@ -22,8 +22,8 @@ public class AuthController {
     private final JwtUtil jwtUtil;
     private final UtilisateurRepository userRepo;
     private final RefreshTokenService refreshTokenService;
-    private static String REFRESH_TOKEN="refreshToken";
-    private static String USERNAME="username";
+    private static final String REFRESH_TOKEN="refreshToken";
+    private static final String USERNAME="username";
 
     public AuthController(AuthenticationManager authManager, JwtUtil jwtUtil,
                           UtilisateurRepository userRepo, RefreshTokenService refreshTokenService) {
@@ -46,7 +46,7 @@ public class AuthController {
         Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(creds.get(USERNAME), creds.get("password"))
         );
-        Utilisateur user = userRepo.findByUsername(creds.get(USERNAME)).get();
+        Utilisateur user = userRepo.findByUsername(creds.get(USERNAME)).orElseThrow(() -> new TrainingApiException("Utilisateur non trouvé",404));
         if(user.isTwoFactorEnabled()) {
             // générer challenge TOTP ici → renvoyer "2FA required"
             return ResponseEntity.ok(Map.of("2fa_required", true));
