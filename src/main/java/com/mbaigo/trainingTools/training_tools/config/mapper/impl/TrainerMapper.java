@@ -1,8 +1,5 @@
 package com.mbaigo.trainingTools.training_tools.config.mapper.impl;
 
-import com.mbaigo.trainingTools.training_tools.beans.domaine.Trainer;
-import com.mbaigo.trainingTools.training_tools.beans.dto.TrainerDto;
-import com.mbaigo.trainingTools.training_tools.config.mapper.GenericMapper;
 import org.springframework.stereotype.Component;
 
 @Component
