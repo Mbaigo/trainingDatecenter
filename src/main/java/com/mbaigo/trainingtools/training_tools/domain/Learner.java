@@ -4,7 +4,7 @@ package com.mbaigo.trainingtools.training_tools.domain;
 import com.mbaigo.trainingtools.training_tools.transaction.InscriptionTraining;
 import com.mbaigo.trainingtools.training_tools.transaction.Payment;
 import com.mbaigo.trainingtools.training_tools.transaction.Progression;
-import com.mbaigo.trainingtools.training_tools.user.Utilisateur;
+import com.mbaigo.trainingtools.training_tools.user.entities.users.Utilisateur;
 import jakarta.persistence.*;
 import lombok.*;
 

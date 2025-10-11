@@ -1,9 +1,9 @@
 package com.mbaigo.trainingtools.training_tools.services.impl;
 
-import com.mbaigo.trainingtools.training_tools.domain.Trainer;
+import com.mbaigo.trainingtools.training_tools.user.entities.users.Trainer;
 import com.mbaigo.trainingtools.training_tools.exception.TrainingApiException;
 import com.mbaigo.trainingtools.training_tools.mapper.impl.TrainerMapper;
-import com.mbaigo.trainingtools.training_tools.repository.TrainerRepository;
+import com.mbaigo.trainingtools.training_tools.user.repository.user.TrainerRepository;
 import com.mbaigo.trainingtools.training_tools.services.TrainerService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;

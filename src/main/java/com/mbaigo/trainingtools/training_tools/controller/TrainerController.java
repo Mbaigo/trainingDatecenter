@@ -1,13 +1,13 @@
 package com.mbaigo.trainingtools.training_tools.controller;
 
-import com.mbaigo.trainingtools.training_tools.domain.Trainer;
+import com.mbaigo.trainingtools.training_tools.controller.model.ApiResponse;
+import com.mbaigo.trainingtools.training_tools.user.entities.users.Trainer;
 import com.mbaigo.trainingtools.training_tools.services.TrainerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/trainers")
@@ -25,12 +25,14 @@ public class TrainerController {
      * Corps: JSON représentant un Trainer
      */
     @PostMapping
-    public ResponseEntity<Trainer> addTrainer(@RequestBody Trainer trainer) {
-        if (trainer == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        Trainer created = trainerService.save(trainer);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse<Trainer>> addTrainer(@RequestBody Trainer trainer) {
+        ApiResponse<Trainer> response = new ApiResponse<>(
+                true,
+                "Formateur ajouté avec succès",
+                trainerService.save(trainer)
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     /**
@@ -38,32 +40,58 @@ public class TrainerController {
      * Endpoint: GET /trainers
      */
     @GetMapping
-    public ResponseEntity<List<Trainer>> getAllTrainers() {
+    public ResponseEntity<ApiResponse<List<Trainer>>> getAllTrainers() {
         List<Trainer> trainers = trainerService.findAll();
+
         if (trainers == null || trainers.isEmpty()) {
+            ApiResponse<List<Trainer>> response = new ApiResponse<>(
+                    true,
+                    "Aucun formateur trouvé",
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        }
+
+        ApiResponse<List<Trainer>> response = new ApiResponse<>(
+                true,
+                "Liste des formateurs récupérée avec succès",
+                trainers
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @GetMapping("/by-id")
+    public ResponseEntity<Trainer> getById(@RequestParam Long id) {
+        return trainerService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/by-firstname")
+    public ResponseEntity<List<Trainer>> getByFirstName(@RequestParam String firstName) {
+        List<Trainer> trainers = trainerService.findByFirstNameIgnoreCase(firstName.trim());
+        if (trainers.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(trainers);
     }
 
-    @GetMapping("/by-id")
-    public Optional<Trainer> getById(@RequestParam Long id) {
-        return trainerService.findById(id);
-    }
-
-    @GetMapping("/by-firstname")
-    public List<Trainer> getByFirstName(@RequestParam String firstName) {
-        return trainerService.findByFirstNameIgnoreCase(firstName);
-    }
-
     @GetMapping("/by-lastname")
-    public List<Trainer> getByLastName(@RequestParam String lastName) {
-        return trainerService.findByLastNameIgnoreCase(lastName);
+    public ResponseEntity<List<Trainer>> getByLastName(@RequestParam String lastName) {
+        List<Trainer> trainers = trainerService.findByLastNameIgnoreCase(lastName.trim());
+        if (trainers.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(trainers);
     }
 
     @GetMapping("/by-mail")
-    public Optional<Trainer> getByMail(@RequestParam String mailAdress) {
-        return trainerService.findByMailAdress(mailAdress);
+    public ResponseEntity<Trainer> getByMail(@RequestParam String mailAdress) {
+        return trainerService.findByMailAdress(mailAdress.trim())
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

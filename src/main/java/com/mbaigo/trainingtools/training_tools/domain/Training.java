@@ -1,6 +1,7 @@
 package com.mbaigo.trainingtools.training_tools.domain;
 
 import com.mbaigo.trainingtools.training_tools.transaction.EvaluateTraining;
+import com.mbaigo.trainingtools.training_tools.user.entities.users.Trainer;
 import jakarta.persistence.*;
 import lombok.*;
 

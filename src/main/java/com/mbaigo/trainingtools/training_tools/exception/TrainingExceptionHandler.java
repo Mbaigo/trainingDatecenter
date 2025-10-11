@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class TrainingExceptionHandler {
@@ -32,5 +35,16 @@ public class TrainingExceptionHandler {
                 request.getDescription(false)
         );
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(TokenRefreshException.class)
+    public ResponseEntity<Map<String, Object>> handleTokenRefreshException(TokenRefreshException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", Instant.now());
+        body.put("status", HttpStatus.FORBIDDEN.value());
+        body.put("error", "Refresh Token Error");
+        body.put("message", ex.getMessage());
+        body.put("refreshToken", ex.getRefreshToken());
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 }

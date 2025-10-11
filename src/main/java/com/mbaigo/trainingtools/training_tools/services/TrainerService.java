@@ -1,6 +1,6 @@
 package com.mbaigo.trainingtools.training_tools.services;
 
-import com.mbaigo.trainingtools.training_tools.domain.Trainer;
+import com.mbaigo.trainingtools.training_tools.user.entities.users.Trainer;
 
 import java.util.List;
 import java.util.Optional;
