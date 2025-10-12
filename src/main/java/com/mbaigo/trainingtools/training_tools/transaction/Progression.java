@@ -1,6 +1,6 @@
 package com.mbaigo.trainingtools.training_tools.transaction;
 
-import com.mbaigo.trainingtools.training_tools.domain.Learner;
+import com.mbaigo.trainingtools.training_tools.user.entities.users.Learner;
 import com.mbaigo.trainingtools.training_tools.domain.Training;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

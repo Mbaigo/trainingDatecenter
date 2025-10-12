@@ -16,12 +16,12 @@ public class Profil {
 
     private String nom;
     private String prenom;
-    private String bio;
+    //Details des parcours universitaires et professionnels
+    private String parcours;
     private String photoUrl;
     private String githubUrl;
     private String linkedinUrl;
     private String avatarUrl;
-    private String address;
 
     @OneToOne
     @JoinColumn(name = "utilisateur_id")

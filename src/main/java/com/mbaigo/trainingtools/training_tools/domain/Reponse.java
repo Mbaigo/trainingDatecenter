@@ -9,7 +9,7 @@ public class Reponse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String texte;
+    private String libelle;
     private boolean correcte;
 
     @ManyToOne

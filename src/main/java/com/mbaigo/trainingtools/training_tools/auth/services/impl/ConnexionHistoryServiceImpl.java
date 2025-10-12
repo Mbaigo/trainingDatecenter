@@ -38,4 +38,10 @@ public class ConnexionHistoryServiceImpl implements ConnexionHistoryService {
     public List<ConnexionHistory> getHistoriqueByUtilisateur(Utilisateur utilisateur) {
         return connexionHistoryRepository.findByUtilisateur(utilisateur);
     }
+
+    @Override
+    public List<ConnexionHistory> getAllHistories() {
+        return connexionHistoryRepository.findAll();
+    }
+
 }

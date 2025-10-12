@@ -1,48 +1,51 @@
-com.mbaigo.trainingTools.training_tools
-│
-├── TrainingToolsApplication.java
-│
-├── config/
-│   ├── JpaConfig.java
-│   ├── SecurityConfig.java
-│   ├── JwtConfig.java
-│
-├── domain/
-│   ├── userRole/
-│   │   ├── Utilisateur.java
-│   │   ├── Role.java
-│   │   └── RefreshToken.java
-│   └── training/
-│       ├── Trainer.java
-│       ├── Course.java
-│       └── Session.java
-│
-├── repository/
-│   ├── userRole/
-│   │   ├── UserRepository.java
-│   │   ├── RoleRepository.java
-│   │   └── RefreshTokenRepository.java
-│   └── training/
-│       ├── TrainerRepository.java
-│       ├── CourseRepository.java
-│       └── SessionRepository.java
-│
-├── service/
-│   ├── userRole/
-│   │   ├── RefreshTokenService.java
-│   │   └── UserService.java
-│   └── training/
-│       ├── TrainerService.java
-│       └── CourseService.java
-│
-├── controller/
-│   ├── userRole/
-│   │   ├── AuthController.java
-│   │   └── RoleController.java
-│   └── training/
-│       ├── TrainerController.java
-│       └── CourseController.java
-│
-└── exception/
-    ├── TrainingApiException.java
+com.mbaigo.trainingtools.training_tools
+├── auth
+│   ├── controller
+│   │   └── AuthController.java
+│   ├── dto
+│   │   ├── LoginRequest.java
+│   │   ├── RegisterStep1Request.java
+│   │   ├── UpdateUserDetailsRequest.java
+│   │   ├── ProfilRequest.java
+│   │   ├── JwtResponse.java
+│   │   └── TokenRefreshRequest.java
+│   ├── service
+│   │   ├── AuthService.java
+│   │   └── impl
+│   │       └── AuthServiceImpl.java
+│   └── token
+│       ├── RefreshToken.java
+│       ├── repository
+│       │   └── RefreshTokenRepository.java
+│       └── service
+│           ├── RefreshTokenService.java
+│           └── impl
+│               └── RefreshTokenServiceImpl.java
+├── security
+│   ├── JwtUtil.java
+│   └── SecurityConfig.java
+├── user
+│   ├── entity
+│   │   ├── Utilisateur.java (abstraite)
+│   │   ├── Trainer.java
+│   │   ├── Learner.java
+│   │   ├── Admin.java
+│   │   ├── Profil.java
+│   │   └── ConnexionHistory.java
+│   ├── repository
+│   │   ├── UtilisateurRepository.java
+│   │   ├── TrainerRepository.java
+│   │   ├── LearnerRepository.java
+│   │   ├── AdminRepository.java
+│   │   ├── ProfilRepository.java
+│   │   └── ConnexionHistoryRepository.java
+│   └── service
+│       ├── UtilisateurService.java
+│       ├── ProfilService.java
+│       ├── ConnexionHistoryService.java
+│       └── impl
+│           ├── UtilisateurServiceImpl.java
+│           ├── ProfilServiceImpl.java
+│           └── ConnexionHistoryServiceImpl.java
+└── exception
     └── GlobalExceptionHandler.java

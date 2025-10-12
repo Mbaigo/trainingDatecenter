@@ -1,6 +1,6 @@
 package com.mbaigo.trainingtools.training_tools.user.repository.user;
 
-import com.mbaigo.trainingtools.training_tools.domain.Learner;
+import com.mbaigo.trainingtools.training_tools.user.entities.users.Learner;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

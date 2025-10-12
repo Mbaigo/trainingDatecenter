@@ -1,71 +1,57 @@
 package com.mbaigo.trainingtools.training_tools.auth.controller;
 
-import com.mbaigo.trainingtools.training_tools.auth.dto.JwtResponse;
-import com.mbaigo.trainingtools.training_tools.auth.dto.LoginRequest;
-import com.mbaigo.trainingtools.training_tools.auth.dto.RegisterRequest;
-import com.mbaigo.trainingtools.training_tools.auth.dto.TokenRefreshRequest;
+import com.mbaigo.trainingtools.training_tools.auth.dto.*;
 import com.mbaigo.trainingtools.training_tools.auth.services.AuthService;
+import com.mbaigo.trainingtools.training_tools.auth.token.services.RefreshTokenService;
+import com.mbaigo.trainingtools.training_tools.config.IpUtils;
 import com.mbaigo.trainingtools.training_tools.exception.TokenRefreshException;
-import com.mbaigo.trainingtools.training_tools.security.RefreshTokenService;
 import com.mbaigo.trainingtools.training_tools.auth.token.RefreshToken;
+import com.mbaigo.trainingtools.training_tools.security.UserAgentUtils;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Utilisateur;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 
 @RestController
 @RequestMapping("/training/api/auth") @AllArgsConstructor
 public class AuthController {
     private final AuthService authService;
-    private final RefreshTokenService refreshTokenService;
 
-    @PostMapping("/register")
-    public ResponseEntity<Utilisateur> register(@RequestBody RegisterRequest request) {
-        Utilisateur user = authService.register(request);
-        return ResponseEntity.ok(user);
+    @PostMapping("/register-step1")
+    public ResponseEntity<?> registerStep1(@Valid @RequestBody RegisterFirstRequest request) {
+        return ResponseEntity.status(201).body(authService.register(request));
+    }
+
+    @PutMapping("/users/{id}/details")
+    public ResponseEntity<?> updateDetails(@PathVariable Long id, @Valid @RequestBody UpdateUserDetailsRequest request) {
+        return ResponseEntity.ok(authService.updateDetails(id, request));
+    }
+
+    @PostMapping("/users/{id}/profil")
+    public ResponseEntity<?> createProfil(@PathVariable Long id, @Valid @RequestBody ProfilRequest request) {
+        return ResponseEntity.status(201).body(authService.createProfile(id, request));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
-        JwtResponse accessToken = authService.login(request, "127.0.0.1", "Browser");
-        Utilisateur user = authService.getUserByEmail(request.getEmail());
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(user);
-
-        JwtResponse jwtResponse = JwtResponse.builder()
-                .token(accessToken.getToken())
-                .refreshToken(refreshToken.getToken())
-                .build();
-
-        return ResponseEntity.ok(jwtResponse);
+    public ResponseEntity<JwtResponse> login(@Valid @RequestBody LoginRequest request, HttpServletRequest servletRequest) {
+        String ip = IpUtils.getClientIp(servletRequest);
+        String device = UserAgentUtils.getDeviceInfo(servletRequest);
+        JwtResponse res = authService.login(request, ip, device);
+        return ResponseEntity.ok(res);
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<JwtResponse> refreshToken(@RequestBody TokenRefreshRequest request) {
-        String requestRefreshToken = request.getRefreshToken();
-
-        RefreshToken refreshToken = refreshTokenService.findByToken(requestRefreshToken)
-                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken, "Refresh token invalide"));
-
-        refreshTokenService.verifyExpiration(refreshToken);
-
-        String newAccessToken = authService.generateTokenFromEmail(refreshToken.getUtilisateur().getEmail());
-        String newRefreshToken = refreshTokenService.createRefreshToken(refreshToken.getUtilisateur()).getToken();
-
-        JwtResponse response = JwtResponse.builder()
-                .token(newAccessToken)
-                .refreshToken(newRefreshToken)
-                .build();
-
-        return ResponseEntity.ok(response);
+    public ResponseEntity<JwtResponse> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
+        JwtResponse res = authService.refreshToken(request.getRefreshToken());
+        return ResponseEntity.ok(res);
     }
-
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@RequestParam Long userId) {
-        refreshTokenService.deleteUtilisateurById(userId);
+        authService.logout(userId);
         return ResponseEntity.noContent().build();
     }
 }

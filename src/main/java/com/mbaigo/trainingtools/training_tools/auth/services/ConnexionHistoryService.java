@@ -8,4 +8,6 @@ import java.util.List;
 public interface ConnexionHistoryService {
     void saveConnexion(Utilisateur utilisateur, String ipAddress, String device);
     List<ConnexionHistory> getHistoriqueByUtilisateur(Utilisateur utilisateur);
+    List<ConnexionHistory> getAllHistories();
+
 }

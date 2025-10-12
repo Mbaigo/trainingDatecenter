@@ -1,17 +1,18 @@
 package com.mbaigo.trainingtools.training_tools.domain;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
 
 @Entity
-@Table(name = "questions")
+@Table(name = "questions") @Data
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(columnDefinition = "TEXT")
-    private String texte;
+    private String libelle;
     private String type; // QCM, TEXTE_LIBRE
 
     @ManyToOne
