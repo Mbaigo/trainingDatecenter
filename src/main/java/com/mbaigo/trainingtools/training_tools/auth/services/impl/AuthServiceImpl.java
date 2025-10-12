@@ -5,6 +5,7 @@ import com.mbaigo.trainingtools.training_tools.auth.services.AuthService;
 import com.mbaigo.trainingtools.training_tools.auth.services.ConnexionHistoryService;
 import com.mbaigo.trainingtools.training_tools.auth.token.RefreshToken;
 import com.mbaigo.trainingtools.training_tools.auth.token.services.RefreshTokenService;
+import com.mbaigo.trainingtools.training_tools.exception.TrainingApiException;
 import com.mbaigo.trainingtools.training_tools.security.services.jwt_service.JwtUtil;
 import com.mbaigo.trainingtools.training_tools.user.entities.admin.Admin;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.*;
@@ -34,8 +35,13 @@ public class AuthServiceImpl implements AuthService {
     private final ProfilService profilService;
 
     public Utilisateur register(RegisterFirstRequest request) {
+        // ✅ Vérification de la correspondance des mots de passe
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new TrainingApiException("Les mots de passe ne correspondent pas.", 400);
+        }
+        // ✅ Vérification si l’email existe déjà
         if (utilisateurRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email déjà utilisé");
+            throw new TrainingApiException("Un utilisateur avec cet email existe déjà.", 400);
         }
 
         String roleName = request.getRole().toUpperCase();

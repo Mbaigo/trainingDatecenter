@@ -51,7 +51,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/training/api/auth/**", "/public/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/training/api/auth/**", "/public/**", "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/api/docs/**",
+                                "/webjars/**" ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()
                         .anyRequest().authenticated()
                 );

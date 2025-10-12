@@ -1,4 +1,15 @@
 spring:
+  springdoc:
+    api-docs:
+      path: /v3/api-docs          # Point d’accès aux docs OpenAPI (par défaut : /v3/api-docs)
+    swagger-ui:
+      path: /swagger-ui     # URL de l’UI (par défaut : /swagger-ui.html)
+      operationsSorter: method
+      tagsSorter: alpha
+      display-request-duration: true
+      doc-expansion: none
+    show-actuator: false      # Facultatif : désactiver la doc des endpoints actuator
+
   datasource:
     url:  ${DB_URL} # Remplacez le port et le nom de la base de données selon vos besoins
     username: ${DB_USERNAME}  # Remplacez par votre nom d'utilisateur MySQL
@@ -40,6 +51,7 @@ jwt:
   secret: ${JWT_SECRET}
   expiration-ms: ${JWT_EXPIRATION}      # 15 minutes
   refresh-expiration-ms: ${JWT_EXPIRATION_REFRESH}  # 7 days
+
 
 
 # Flyway / Liquibase options (si utilisés)

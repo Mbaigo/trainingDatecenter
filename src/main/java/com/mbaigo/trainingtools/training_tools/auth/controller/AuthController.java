@@ -2,12 +2,8 @@ package com.mbaigo.trainingtools.training_tools.auth.controller;
 
 import com.mbaigo.trainingtools.training_tools.auth.dto.*;
 import com.mbaigo.trainingtools.training_tools.auth.services.AuthService;
-import com.mbaigo.trainingtools.training_tools.auth.token.services.RefreshTokenService;
 import com.mbaigo.trainingtools.training_tools.config.IpUtils;
-import com.mbaigo.trainingtools.training_tools.exception.TokenRefreshException;
-import com.mbaigo.trainingtools.training_tools.auth.token.RefreshToken;
 import com.mbaigo.trainingtools.training_tools.security.UserAgentUtils;
-import com.mbaigo.trainingtools.training_tools.user.entities.users.Utilisateur;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -20,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/register-step1")
+    @PostMapping("/register")
     public ResponseEntity<?> registerStep1(@Valid @RequestBody RegisterFirstRequest request) {
         return ResponseEntity.status(201).body(authService.register(request));
     }
