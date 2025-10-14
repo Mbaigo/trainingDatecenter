@@ -1,6 +1,7 @@
 package com.mbaigo.trainingtools.training_tools.user.entities.users;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -19,7 +20,7 @@ public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Email
     @Column(nullable = false, unique = true)
     private String email;
     private String username;
@@ -32,8 +33,8 @@ public class Utilisateur {
 
     private String firstName;
     private String lastName;
+    @Column(nullable = false, unique = true)
     private String phoneNumber;
-    private String level;
 
     private LocalDateTime dateInscription;
 

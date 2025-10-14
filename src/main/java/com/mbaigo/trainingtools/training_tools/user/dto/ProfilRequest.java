@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class ProfilRequest {
+    private String certification;
     private String nom;
     private String prenom;
     private String email;

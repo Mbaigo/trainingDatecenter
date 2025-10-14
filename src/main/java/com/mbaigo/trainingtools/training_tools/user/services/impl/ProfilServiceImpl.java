@@ -33,6 +33,7 @@ public class ProfilServiceImpl implements ProfilService {
                 .nom(user.getFirstName())
                 .prenom(user.getLastName())
                 .email(user.getEmail())
+                .certification(request.getCertification())
                 .avatarUrl(request.getAvatarUrl())
                 .parcours(request.getParcours())
                 .githubUrl(request.getGithubUrl())
@@ -65,9 +66,10 @@ public class ProfilServiceImpl implements ProfilService {
         Profil profil = profilRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("Profil non trouvé"));
 
         // Synchronisation automatique
-        profil.setNom(request.getNom());
-        profil.setPrenom(request.getPrenom());
-        profil.setEmail(request.getEmail());
+        if (request.getNom() != null) profil.setNom(request.getNom());
+        if (request.getPrenom() != null) profil.setPrenom(request.getPrenom());
+        if (request.getEmail()!= null) profil.setEmail(request.getEmail());
+        if (request.getCertification()!= null) profil.setCertification(request.getCertification());
 
         // Mise à jour des champs modifiables
         if (request.getPhotoUrl() != null) profil.setPhotoUrl(request.getPhotoUrl());

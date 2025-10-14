@@ -20,6 +20,7 @@ public class Profil {
     private String nom;
     private String prenom;
     private String email;
+    private String certification;
     //Details des parcours universitaires et professionnels
     private String parcours;
     private String photoUrl;

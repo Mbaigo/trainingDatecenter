@@ -10,9 +10,7 @@ import java.util.List;
 @AllArgsConstructor @NoArgsConstructor @Setter @Getter
 @PrimaryKeyJoinColumn(name = "utilisateur_id")
 public class Trainer extends Utilisateur {
-    private String certification;
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
     private List<Training> trainingList;
-    private String speciality;
 }
 
