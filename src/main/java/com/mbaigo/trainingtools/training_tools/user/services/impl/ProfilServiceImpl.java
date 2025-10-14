@@ -40,6 +40,14 @@ public class ProfilServiceImpl implements ProfilService {
                 .utilisateur(user)
                 .build();
 
+        // Sauvegarde des sous-éléments si présents
+        if (profil.getExperiences() != null) {
+            profil.getExperiences().forEach(exp -> exp.setProfil(profil));
+        }
+        if (profil.getSpecialities() != null) {
+            profil.getSpecialities().forEach(spec -> spec.setProfil(profil));
+        }
+
         Profil saved = profilRepository.save(profil);
         user.setProfil(saved);
         utilisateurRepository.save(user);
