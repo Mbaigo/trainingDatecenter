@@ -7,6 +7,7 @@ import com.mbaigo.trainingtools.training_tools.auth.token.RefreshToken;
 import com.mbaigo.trainingtools.training_tools.auth.token.services.RefreshTokenService;
 import com.mbaigo.trainingtools.training_tools.exception.TrainingApiException;
 import com.mbaigo.trainingtools.training_tools.security.services.jwt_service.JwtUtil;
+import com.mbaigo.trainingtools.training_tools.user.dto.ProfilRequest;
 import com.mbaigo.trainingtools.training_tools.user.entities.admin.Admin;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.*;
 import com.mbaigo.trainingtools.training_tools.user.repository.user.RoleRepository;

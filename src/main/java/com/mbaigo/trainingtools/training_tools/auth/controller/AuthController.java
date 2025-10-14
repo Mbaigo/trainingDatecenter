@@ -4,6 +4,7 @@ import com.mbaigo.trainingtools.training_tools.auth.dto.*;
 import com.mbaigo.trainingtools.training_tools.auth.services.AuthService;
 import com.mbaigo.trainingtools.training_tools.config.IpUtils;
 import com.mbaigo.trainingtools.training_tools.security.UserAgentUtils;
+import com.mbaigo.trainingtools.training_tools.user.dto.ProfilRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,7 @@
 package com.mbaigo.trainingtools.training_tools.auth.services;
 
 import com.mbaigo.trainingtools.training_tools.auth.dto.*;
+import com.mbaigo.trainingtools.training_tools.user.dto.ProfilRequest;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Profil;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Utilisateur;
 

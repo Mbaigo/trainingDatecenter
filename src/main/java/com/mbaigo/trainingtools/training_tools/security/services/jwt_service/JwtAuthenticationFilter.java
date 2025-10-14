@@ -1,10 +1,12 @@
 package com.mbaigo.trainingtools.training_tools.security.services.jwt_service;
 
 import com.mbaigo.trainingtools.training_tools.security.services.CustomUserDetailsService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,13 +31,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        final String header = request.getHeader("Authorization");
+        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         String username = null;
         String token = null;
 
         if(header != null && header.startsWith("Bearer ")) {
             token = header.substring(7);
-            try { username = jwtUtil.getUsernameFromToken(token); } catch (Exception e) {}
+            try { username = jwtUtil.getUsernameFromToken(token);
+            } catch (ExpiredJwtException e) {
+                logger.warn("Le token JWT est expiré : =========>{}"+ e.getMessage());
+            }catch (Exception e) {
+                logger.error("Erreur de validation du JWT : =========>>>{}"+ e.getMessage());
+            }
         }
 
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
