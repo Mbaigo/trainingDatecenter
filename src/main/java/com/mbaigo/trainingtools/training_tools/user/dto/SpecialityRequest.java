@@ -1,8 +1,8 @@
 package com.mbaigo.trainingtools.training_tools.user.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@AllArgsConstructor @Setter @Getter @Builder
 public class SpecialityRequest {
     private Long id;
     private String speciality;

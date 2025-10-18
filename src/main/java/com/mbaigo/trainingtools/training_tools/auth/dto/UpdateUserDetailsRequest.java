@@ -1,8 +1,12 @@
 package com.mbaigo.trainingtools.training_tools.auth.dto;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter @Getter @Builder
+@AllArgsConstructor
 public class UpdateUserDetailsRequest {
     private String username;
     private String firstName;

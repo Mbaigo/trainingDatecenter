@@ -3,13 +3,11 @@ package com.mbaigo.trainingtools.training_tools.transaction;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Learner;
 import com.mbaigo.trainingtools.training_tools.domain.Training;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Table(name = "progressions") @AllArgsConstructor @Data @NoArgsConstructor @Builder
+@Table(name = "progressions") @AllArgsConstructor @Setter @Getter
+@NoArgsConstructor @Builder
 public class Progression {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

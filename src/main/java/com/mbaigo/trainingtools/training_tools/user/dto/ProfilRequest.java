@@ -1,11 +1,12 @@
 package com.mbaigo.trainingtools.training_tools.user.dto;
 
-import lombok.Data;
-import net.minidev.json.annotate.JsonIgnore;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter @Setter @AllArgsConstructor @Builder
 public class ProfilRequest {
     private String certification;
     private String nom;
@@ -13,10 +14,6 @@ public class ProfilRequest {
     private String email;
     //Details des parcours universitaires et professionnels
     private String parcours;
-//    @JsonIgnore
-//    private List<SpecialityRequest> specialities;
-//    @JsonIgnore
-//    private List<ExperienceRequest> experiences;
     private String photoUrl;
     private String githubUrl;
     private String linkedinUrl;

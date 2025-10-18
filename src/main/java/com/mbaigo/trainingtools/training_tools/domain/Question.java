@@ -1,12 +1,12 @@
 package com.mbaigo.trainingtools.training_tools.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Table(name = "questions") @Data
+@Table(name = "questions") @Getter @Setter @AllArgsConstructor @Builder
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

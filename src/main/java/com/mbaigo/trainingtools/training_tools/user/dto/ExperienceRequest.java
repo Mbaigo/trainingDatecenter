@@ -1,9 +1,12 @@
 package com.mbaigo.trainingtools.training_tools.user.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data @Builder
+@Setter @Getter @AllArgsConstructor
+@Builder
 public class ExperienceRequest {
     private Long id;
     private String jobTitle;       // Titre du poste

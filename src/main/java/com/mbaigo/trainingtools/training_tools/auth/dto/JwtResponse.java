@@ -1,9 +1,8 @@
 package com.mbaigo.trainingtools.training_tools.auth.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Setter @Getter @AllArgsConstructor
 @Builder
 public class JwtResponse {
     private String token;

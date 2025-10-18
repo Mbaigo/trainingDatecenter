@@ -1,10 +1,8 @@
 package com.mbaigo.trainingtools.training_tools.controller.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApiResponse<T> {
