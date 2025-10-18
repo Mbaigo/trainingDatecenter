@@ -9,8 +9,7 @@ import lombok.*;
 
 import java.util.List;
 
-@Entity @AllArgsConstructor @Getter @Setter @NoArgsConstructor
-@PrimaryKeyJoinColumn(name = "utilisateur_id")
+@Entity @AllArgsConstructor @Getter @Setter @NoArgsConstructor @Builder
 public class Learner extends Utilisateur {
         @OneToMany(mappedBy = "learner", cascade = CascadeType.ALL)
         private List<InscriptionTraining> inscriptions;

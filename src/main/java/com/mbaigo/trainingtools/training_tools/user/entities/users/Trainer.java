@@ -7,9 +7,10 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@AllArgsConstructor @NoArgsConstructor @Setter @Getter
-@PrimaryKeyJoinColumn(name = "utilisateur_id")
+@AllArgsConstructor @NoArgsConstructor @Setter @Getter @Builder
 public class Trainer extends Utilisateur {
+    @OneToOne(mappedBy = "trainer", cascade = CascadeType.ALL)
+    private Profil profil;
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
     private List<Training> trainingList;
 }

@@ -4,5 +4,7 @@ import lombok.Data;
 
 @Data
 public class SpecialityRequest {
+    private Long id;
     private String speciality;
+    private Long profilId;
 }

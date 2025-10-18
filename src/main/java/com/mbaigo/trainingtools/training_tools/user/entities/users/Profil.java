@@ -29,8 +29,8 @@ public class Profil {
     private String avatarUrl;
 
     @OneToOne
-    @JoinColumn(name = "utilisateur_id")
-    private Utilisateur utilisateur;
+    @JoinColumn(name = "trainer_id")
+    private Trainer trainer;
     /** Liste des expériences du profil */
     @OneToMany(mappedBy = "profil", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Experience> experiences = new ArrayList<>();

@@ -1,14 +1,20 @@
 package com.mbaigo.trainingtools.training_tools.user.services.impl;
 
+import com.mbaigo.trainingtools.training_tools.exception.TrainingApiException;
+import com.mbaigo.trainingtools.training_tools.security.services.JwtAuthenticationUtil;
+import com.mbaigo.trainingtools.training_tools.user.dto.ExperienceRequest;
 import com.mbaigo.trainingtools.training_tools.user.dto.ProfilRequest;
-import com.mbaigo.trainingtools.training_tools.user.entities.users.Profil;
-import com.mbaigo.trainingtools.training_tools.user.entities.users.Utilisateur;
+import com.mbaigo.trainingtools.training_tools.user.dto.SpecialityRequest;
+import com.mbaigo.trainingtools.training_tools.user.entities.users.*;
+import com.mbaigo.trainingtools.training_tools.user.mappers.ExperienceMapper;
+import com.mbaigo.trainingtools.training_tools.user.mappers.SpecialityMapper;
 import com.mbaigo.trainingtools.training_tools.user.repository.user.ExperienceRepository;
 import com.mbaigo.trainingtools.training_tools.user.repository.user.ProfilRepository;
 import com.mbaigo.trainingtools.training_tools.user.repository.user.SpecialityRepository;
 import com.mbaigo.trainingtools.training_tools.user.repository.user.UtilisateurRepository;
 import com.mbaigo.trainingtools.training_tools.user.services.ProfilService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +29,25 @@ public class ProfilServiceImpl implements ProfilService {
     private final UtilisateurRepository utilisateurRepository;
     private final ExperienceRepository experienceRepository;
     private final SpecialityRepository specialityRepository;
+    private  final SpecialityMapper specialityMapper;
+    private  final ExperienceMapper experienceMapper;
+    private final JwtAuthenticationUtil jwtAuthenticationUtil;
 
     @Override
-    public Profil createProfilForUser(Long userId, ProfilRequest request) {
-        Utilisateur user = utilisateurRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
+    public Profil createProfilForUser(HttpServletRequest req, ProfilRequest request) {
+        Utilisateur user = jwtAuthenticationUtil.getAuthenticatedUser(req);
 
+        // ✅ Vérification du type : seuls les Trainers peuvent avoir un profil
+        if (!(user instanceof Trainer trainer)) {
+            throw new TrainingApiException("Seuls les utilisateurs de type TRAINER peuvent créer un profil.", 403);
+        }
+
+        // ✅ Vérification qu’un profil n’existe pas déjà
+        if (trainer.getProfil() != null) {
+            throw new TrainingApiException("Un profil existe déjà pour cet utilisateur.", 400);
+        }
+
+        // ✅ Construction du profil
         Profil profil = Profil.builder()
                 .nom(user.getFirstName())
                 .prenom(user.getLastName())
@@ -38,22 +57,20 @@ public class ProfilServiceImpl implements ProfilService {
                 .parcours(request.getParcours())
                 .githubUrl(request.getGithubUrl())
                 .linkedinUrl(request.getLinkedinUrl())
-                .utilisateur(user)
                 .build();
 
-        // Sauvegarde des sous-éléments si présents
-        if (profil.getExperiences() != null) {
-            profil.getExperiences().forEach(exp -> exp.setProfil(profil));
-        }
-        if (profil.getSpecialities() != null) {
-            profil.getSpecialities().forEach(spec -> spec.setProfil(profil));
-        }
+        // 🔹 Sauvegarde
+        Profil savedProfil = profilRepository.save(profil);
 
-        Profil saved = profilRepository.save(profil);
-        user.setProfil(saved);
-        utilisateurRepository.save(user);
-        return saved;
+        // 🔹 Association du profil au Trainer
+        profil.setTrainer(trainer);
+        trainer.setProfil(profil);
+
+        utilisateurRepository.save(trainer);
+
+        return savedProfil;
     }
+
 
     /**
      * @param userId 
@@ -77,18 +94,6 @@ public class ProfilServiceImpl implements ProfilService {
         if (request.getLinkedinUrl() != null) profil.setLinkedinUrl(request.getLinkedinUrl());
         if (request.getGithubUrl() != null) profil.setGithubUrl(request.getGithubUrl());
 
-        // gestion des listes associées
-        if (profil.getExperiences() != null) {
-            experienceRepository.deleteAll(profil.getExperiences());
-            profil.getExperiences().forEach(exp -> exp.setProfil(profil));
-            profil.setExperiences(profil.getExperiences());
-        }
-
-        if (profil.getSpecialities() != null) {
-            specialityRepository.deleteAll(profil.getSpecialities());
-            profil.getSpecialities().forEach(spec -> spec.setProfil(profil));
-            profil.setSpecialities(profil.getSpecialities());
-        }
 
         return profilRepository.save(profil);
     }
@@ -108,11 +113,37 @@ public class ProfilServiceImpl implements ProfilService {
      */
     @Override
     public Optional<Profil> findByUtilisateurPhoneNumber(String phoneNumber) {
-        return Optional.ofNullable(profilRepository.findByUtilisateurPhoneNumber(phoneNumber).orElseThrow(() -> new EntityNotFoundException("Profil non trouvé pour le numéro: " + phoneNumber)));
+        return Optional.ofNullable(profilRepository.findByTrainerPhoneNumber(phoneNumber).orElseThrow(() -> new EntityNotFoundException("Profil non trouvé pour le numéro: " + phoneNumber)));
     }
 
     @Override
     public List<Profil> findAllProfils() {
         return profilRepository.findAll();
+    }
+
+    /**
+     * @param profilId 
+     * @param experienceRequest
+     * @return
+     */
+    @Override
+    public Experience addExperienceToProfil(Long profilId, ExperienceRequest experienceRequest) {
+        Profil profil=profilRepository.findById(profilId).orElseThrow(()-> new EntityNotFoundException("Profil inexistant"));
+        Experience experience = experienceMapper.toEntity(experienceRequest, profil);
+        return experienceRepository.save(experience);
+    }
+
+    /**
+     * @param profilId 
+     * @param speciality
+     * @return
+     */
+    @Override
+    public Speciality addSpecialityToProfil(Long profilId, SpecialityRequest speciality) {
+        Profil profil = profilRepository.findById(profilId)
+                .orElseThrow(() -> new IllegalArgumentException("Profil non trouvé"));
+
+        Speciality specialite = specialityMapper.toEntity(speciality, profil);
+        return specialityRepository.save(specialite);
     }
 }

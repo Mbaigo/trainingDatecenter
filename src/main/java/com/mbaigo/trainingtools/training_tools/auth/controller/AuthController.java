@@ -2,9 +2,9 @@ package com.mbaigo.trainingtools.training_tools.auth.controller;
 
 import com.mbaigo.trainingtools.training_tools.auth.dto.*;
 import com.mbaigo.trainingtools.training_tools.auth.services.AuthService;
+import com.mbaigo.trainingtools.training_tools.config.ApiPathProperties;
 import com.mbaigo.trainingtools.training_tools.config.IpUtils;
 import com.mbaigo.trainingtools.training_tools.security.UserAgentUtils;
-import com.mbaigo.trainingtools.training_tools.user.dto.ProfilRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/training/api/auth") @AllArgsConstructor
+@RequestMapping(ApiPathProperties.BASE_API+"auth") @AllArgsConstructor
 public class AuthController {
     private final AuthService authService;
 
@@ -25,11 +25,6 @@ public class AuthController {
     @PutMapping("/users/{id}/details")
     public ResponseEntity<?> updateDetails(@PathVariable Long id, @Valid @RequestBody UpdateUserDetailsRequest request) {
         return ResponseEntity.ok(authService.updateDetails(id, request));
-    }
-
-    @PostMapping("/users/{id}/profil")
-    public ResponseEntity<?> createProfil(@PathVariable Long id, @Valid @RequestBody ProfilRequest request) {
-        return ResponseEntity.status(201).body(authService.createProfile(id, request));
     }
 
     @PostMapping("/login")

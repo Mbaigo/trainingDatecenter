@@ -10,7 +10,6 @@ import com.mbaigo.trainingtools.training_tools.security.services.jwt_service.Jwt
 import com.mbaigo.trainingtools.training_tools.user.dto.ProfilRequest;
 import com.mbaigo.trainingtools.training_tools.user.entities.admin.Admin;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.*;
-import com.mbaigo.trainingtools.training_tools.user.repository.user.RoleRepository;
 import com.mbaigo.trainingtools.training_tools.user.repository.user.UtilisateurRepository;
 import com.mbaigo.trainingtools.training_tools.user.services.ProfilService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Service @RequiredArgsConstructor
@@ -32,7 +32,6 @@ public class AuthServiceImpl implements AuthService {
     private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenService;
     private final ConnexionHistoryService connexionHistoryService;
-    private final RoleRepository roleRepository;
     private final ProfilService profilService;
 
     public Utilisateur register(RegisterFirstRequest request) {
@@ -45,25 +44,26 @@ public class AuthServiceImpl implements AuthService {
             throw new TrainingApiException("Un utilisateur avec cet email existe déjà.", 400);
         }
 
-        String roleName = request.getRole().toUpperCase();
-        Utilisateur user;
-        switch (roleName) {
-            case "TRAINER" -> user = new Trainer();
-            case "LEARNER" -> user = new Learner();
-            case "ADMIN" -> user = new Admin();
-            default -> throw new IllegalArgumentException("Rôle invalide");
+        // ✅ Détermination du rôle (Enum)
+        Role role;
+        try {
+            role = Role.valueOf(request.getRole().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new TrainingApiException("Rôle invalide. Valeurs possibles : ADMIN, TRAINER, LEARNER.", 400);
         }
 
+        // ✅ Création dynamique selon le rôle
+        Utilisateur user = UtilisateurFactory.createUser(role);
+
+        // ✅ Affectation des attributs communs
         user.setEmail(request.getEmail());
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setEnabled(false);
+        user.setEnabled(true);
         user.setActif(true);
-
-        Role role = roleRepository.findByName("ROLE_" + roleName)
-                .orElseGet(() -> roleRepository.save(new Role(null, "ROLE_" + roleName)));
-
+        user.setDateInscription(LocalDateTime.now());
         user.setRoles(Set.of(role));
+
         return utilisateurRepository.save(user);
     }
 
@@ -76,23 +76,11 @@ public class AuthServiceImpl implements AuthService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setPhoneNumber(request.getPhoneNumber());
-        user.setLevel(request.getLevel());
 
         user.setEnabled(true);
         return utilisateurRepository.save(user);
     }
 
-    @Override
-    public Profil createProfile(Long userId, ProfilRequest request) {
-        Profil profil = profilService.createProfilForUser(userId, request);
-        // ensure user enabled
-        Utilisateur user = utilisateurRepository.findById(userId).orElseThrow();
-        if (!user.isEnabled()) {
-            user.setEnabled(true);
-            utilisateurRepository.save(user);
-        }
-        return profil;
-    }
 
     /**
      * @param request 

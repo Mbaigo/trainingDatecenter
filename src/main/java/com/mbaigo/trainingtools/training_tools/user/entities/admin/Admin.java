@@ -7,8 +7,7 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "admins")
-@PrimaryKeyJoinColumn(name = "utilisateur_id")
+@Table(name = "admins") @Builder
 @AllArgsConstructor @NoArgsConstructor @Getter @Setter
 public class Admin extends Utilisateur {
     private String niveauAcces; // SUPER, STANDARD

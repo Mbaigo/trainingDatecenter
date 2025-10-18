@@ -1,4 +1,5 @@
 spring:
+  # Préfixe pour toutes les routes de l'API
   springdoc:
     api-docs:
       path: /v3/api-docs          # Point d’accès aux docs OpenAPI (par défaut : /v3/api-docs)

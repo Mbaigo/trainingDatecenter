@@ -2,10 +2,15 @@ package com.mbaigo.trainingtools.training_tools.user.entities.users;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@AllArgsConstructor @NoArgsConstructor @Data @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Entity
 public class Experience {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
