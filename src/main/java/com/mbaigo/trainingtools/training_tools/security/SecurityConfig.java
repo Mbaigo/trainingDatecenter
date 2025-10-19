@@ -1,10 +1,15 @@
 package com.mbaigo.trainingtools.training_tools.security;
 
 import com.mbaigo.trainingtools.training_tools.security.services.jwt_service.JwtAuthenticationFilter;
+import com.mbaigo.trainingtools.training_tools.security.services.CustomUserDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,10 +31,14 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthFilter;
+    private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final CustomUserDetailsService userDetailsService;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, CustomUserDetailsService userDetailsService) {
         this.jwtAuthFilter = jwtAuthFilter;
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -38,9 +47,19 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        // Explicit ProviderManager with a single DaoAuthenticationProvider wired to our CustomUserDetailsService
+        ProviderManager pm = new ProviderManager(List.of(daoAuthenticationProvider()));
+        log.info("Created explicit ProviderManager with providers: {}", pm.getProviders());
+        return pm;
     }
 
 
@@ -51,16 +70,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/training/api/v1/auth/**",
-//                                "/public/**",
-//                                "/swagger-ui.html",
-//                                "/swagger-ui/**",
-//                                "/v3/api-docs/**",
-//                                "/api/docs/**",
-//                                "/webjars/**" ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()
                                 .anyRequest().permitAll()
-                        //.anyRequest().authenticated()
                 );
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -80,4 +91,3 @@ public class SecurityConfig {
         return source;
     }
 }
-

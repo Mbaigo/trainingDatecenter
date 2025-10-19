@@ -1,5 +1,6 @@
 package com.mbaigo.trainingtools.training_tools.user.entities.users;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,5 +24,6 @@ public class Experience {
     private String jobDescription; // Description des responsabilités et réalisations
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profil_id")
+    @JsonBackReference("profil-experiences")
     private Profil profil;
 }

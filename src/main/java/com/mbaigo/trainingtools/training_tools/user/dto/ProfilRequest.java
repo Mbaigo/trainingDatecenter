@@ -9,10 +9,6 @@ import lombok.Setter;
 @Getter @Setter @AllArgsConstructor @Builder
 public class ProfilRequest {
     private String certification;
-    private String nom;
-    private String prenom;
-    private String email;
-    //Details des parcours universitaires et professionnels
     private String parcours;
     private String photoUrl;
     private String githubUrl;

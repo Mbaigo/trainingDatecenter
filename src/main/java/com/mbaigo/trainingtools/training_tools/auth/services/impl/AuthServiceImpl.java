@@ -13,7 +13,10 @@ import com.mbaigo.trainingtools.training_tools.user.entities.users.*;
 import com.mbaigo.trainingtools.training_tools.user.repository.user.UtilisateurRepository;
 import com.mbaigo.trainingtools.training_tools.user.services.ProfilService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +29,8 @@ import java.util.Set;
 
 @Service @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
+    private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
+
     private final UtilisateurRepository utilisateurRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -90,12 +95,19 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public JwtResponse login(LoginRequest request, String ipAddress, String device) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+        log.info("Login attempt for email={}", request.getEmail());
+        log.info("AuthenticationManager class = {}", authenticationManager.getClass().getName());
+        if (authenticationManager instanceof ProviderManager pm) {
+            log.info("ProviderManager providers = {}", pm.getProviders());
+        }
+
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                request.getEmail(), request.getPassword());
+
+        log.info("Calling authenticationManager.authenticate(...)");
+        Authentication authentication = authenticationManager.authenticate(token);
+        log.info("authentication completed: principalClass={}",
+                authentication != null && authentication.getPrincipal() != null ? authentication.getPrincipal().getClass().getName() : "null");
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

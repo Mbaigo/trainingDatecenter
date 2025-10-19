@@ -1,5 +1,7 @@
 package com.mbaigo.trainingtools.training_tools.user.entities.users;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,13 +32,16 @@ public class Profil {
 
     @OneToOne
     @JoinColumn(name = "trainer_id")
+    @JsonBackReference("trainer-profil")
     private Trainer trainer;
     /** Liste des expériences du profil */
     @OneToMany(mappedBy = "profil", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("profil-experiences")
     private List<Experience> experiences = new ArrayList<>();
 
     /** Liste des spécialités du profil */
     @OneToMany(mappedBy = "profil", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("profil-specialities")
     private List<Speciality> specialities = new ArrayList<>();
 
     public void addExperience(Experience exp) {

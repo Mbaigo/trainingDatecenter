@@ -1,6 +1,4 @@
 package com.mbaigo.trainingtools.training_tools.user.entities.users;
-
-
 import com.mbaigo.trainingtools.training_tools.transaction.InscriptionTraining;
 import com.mbaigo.trainingtools.training_tools.transaction.Payment;
 import com.mbaigo.trainingtools.training_tools.transaction.Progression;

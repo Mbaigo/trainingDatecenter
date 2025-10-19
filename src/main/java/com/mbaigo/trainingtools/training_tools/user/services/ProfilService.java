@@ -6,13 +6,12 @@ import com.mbaigo.trainingtools.training_tools.user.dto.SpecialityRequest;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Experience;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Profil;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Speciality;
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ProfilService {
-    Profil createProfilForUser(HttpServletRequest httpServletRequest, ProfilRequest request);
+    Profil createProfilForUser(ProfilRequest request);
     Profil updateProfilForUser(Long userId, ProfilRequest request);
     public Optional<Profil> findByUtilisateurEmail(String email);
     public Optional<Profil> findByUtilisateurPhoneNumber(String phoneNumber);

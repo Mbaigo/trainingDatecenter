@@ -1,5 +1,6 @@
 package com.mbaigo.trainingtools.training_tools.user.entities.users;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,5 +21,6 @@ public class Speciality {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profil_id")
+    @JsonBackReference("profil-specialities")
     private Profil profil;
 }

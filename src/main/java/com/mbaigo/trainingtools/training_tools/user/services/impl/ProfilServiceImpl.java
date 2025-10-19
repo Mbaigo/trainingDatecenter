@@ -16,6 +16,8 @@ import com.mbaigo.trainingtools.training_tools.user.services.ProfilService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,8 +36,13 @@ public class ProfilServiceImpl implements ProfilService {
     private final JwtAuthenticationUtil jwtAuthenticationUtil;
 
     @Override
-    public Profil createProfilForUser(HttpServletRequest req, ProfilRequest request) {
-        Utilisateur user = jwtAuthenticationUtil.getAuthenticatedUser(req);
+    public Profil createProfilForUser(ProfilRequest request) {
+        // 🔹 Récupère l'utilisateur connecté via le SecurityContext
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        Utilisateur user = utilisateurRepository.findByEmail(auth.getName())
+                .orElseThrow(() -> new TrainingApiException("Utilisateur non trouvé avec l'email : " + auth.getName(), 404));
+
 
         // ✅ Vérification du type : seuls les Trainers peuvent avoir un profil
         if (!(user instanceof Trainer trainer)) {
@@ -67,8 +74,14 @@ public class ProfilServiceImpl implements ProfilService {
         trainer.setProfil(profil);
 
         utilisateurRepository.save(trainer);
+        return Profil.builder()
+                .certification(savedProfil.getCertification())
+                .avatarUrl(savedProfil.getAvatarUrl())
+                .parcours(savedProfil.getParcours())
+                .githubUrl(savedProfil.getGithubUrl())
+                .linkedinUrl(savedProfil.getLinkedinUrl())
+                .build();
 
-        return savedProfil;
     }
 
 
@@ -82,10 +95,7 @@ public class ProfilServiceImpl implements ProfilService {
 
         Profil profil = profilRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("Profil non trouvé"));
 
-        // Synchronisation automatique
-        if (request.getNom() != null) profil.setNom(request.getNom());
-        if (request.getPrenom() != null) profil.setPrenom(request.getPrenom());
-        if (request.getEmail()!= null) profil.setEmail(request.getEmail());
+
         if (request.getCertification()!= null) profil.setCertification(request.getCertification());
 
         // Mise à jour des champs modifiables

@@ -3,7 +3,8 @@ package com.mbaigo.trainingtools.training_tools.user.entities.users;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
-import net.minidev.json.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -53,6 +54,7 @@ public abstract class Utilisateur implements UserDetails {
 
 
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<ConnexionHistory> historiqueConnexions;
 
     // ============ SPRING SECURITY ============

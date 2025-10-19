@@ -5,11 +5,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "spring.jwt") @Setter @Getter @AllArgsConstructor @NoArgsConstructor
+@ConfigurationProperties(prefix = "jwt") @Setter @Getter @AllArgsConstructor @NoArgsConstructor
 public class JwtProperties {
     private String secret;
     private Long expirationMs;
     private Long refreshExpirationMs;
 
 }
-

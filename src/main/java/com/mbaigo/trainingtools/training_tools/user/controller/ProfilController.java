@@ -6,12 +6,15 @@ import com.mbaigo.trainingtools.training_tools.config.annotations.RequireTrainer
 import com.mbaigo.trainingtools.training_tools.config.annotations.RequireTrainerRole;
 import com.mbaigo.trainingtools.training_tools.user.dto.ExperienceRequest;
 import com.mbaigo.trainingtools.training_tools.user.dto.ProfilRequest;
+import com.mbaigo.trainingtools.training_tools.user.dto.ProfilResponseDto;
 import com.mbaigo.trainingtools.training_tools.user.dto.SpecialityRequest;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Experience;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Profil;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Speciality;
+import com.mbaigo.trainingtools.training_tools.user.mappers.ProfilMapper;
 import com.mbaigo.trainingtools.training_tools.user.services.ProfilService;
-import jakarta.servlet.http.HttpServletRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +25,14 @@ import java.util.List;
 @RestController
 @RequestMapping(ApiPathProperties.BASE_API+"user/profils")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class ProfilController {
     private final ProfilService profilService;
     @RequireTrainerRole
-    @PostMapping("/{userId}/profil")
-    public ResponseEntity<Profil> createProfil(HttpServletRequest request, @Valid @RequestBody ProfilRequest profil) {
-        return ResponseEntity.ok(profilService.createProfilForUser(request,profil));
+    @PostMapping("/addProfil")
+    @Operation(summary = "Créer un profil pour l'utilisateur connecté")
+    public ResponseEntity<ProfilResponseDto> createProfil(@Valid @RequestBody ProfilRequest profil) {
+        return ResponseEntity.ok(ProfilMapper.toDTO(profilService.createProfilForUser(profil)));
     }
     @RequireTrainerRole
     @PutMapping("/{profilId}")
