@@ -14,7 +14,6 @@ import com.mbaigo.trainingtools.training_tools.user.repository.user.SpecialityRe
 import com.mbaigo.trainingtools.training_tools.user.repository.user.UtilisateurRepository;
 import com.mbaigo.trainingtools.training_tools.user.services.ProfilService;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -148,8 +147,25 @@ public class ProfilServiceImpl implements ProfilService {
      */
     @Override
     public Speciality addSpecialityToProfil(SpecialityRequest speciality) {
-
         return specialityRepository.save(specialityMapper.toEntity(speciality, getCurrentUserProfil()));
+    }
+
+    /**
+     * @param certification 
+     * @return
+     */
+    @Override
+    public List<Profil> findProfilByCertification(String certification) {
+        return List.of();
+    }
+
+    /**
+     * @param specialityName 
+     * @return
+     */
+    @Override
+    public List<Profil> findProfilBySpecialityName(String specialityName) {
+        return List.of();
     }
 
 

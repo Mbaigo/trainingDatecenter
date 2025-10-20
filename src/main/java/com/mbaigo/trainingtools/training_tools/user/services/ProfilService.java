@@ -18,4 +18,6 @@ public interface ProfilService {
     public List<Profil> findAllProfils();
     Experience addExperienceToProfil(ExperienceRequest experienceRequest);
     Speciality addSpecialityToProfil(SpecialityRequest speciality);
+    List<Profil> findProfilByCertification(String certification);
+    List<Profil> findProfilBySpecialityName(String specialityName);
 }
