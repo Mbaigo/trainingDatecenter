@@ -132,28 +132,42 @@ public class ProfilServiceImpl implements ProfilService {
     }
 
     /**
-     * @param profilId 
+
      * @param experienceRequest
      * @return
      */
     @Override
-    public Experience addExperienceToProfil(Long profilId, ExperienceRequest experienceRequest) {
-        Profil profil=profilRepository.findById(profilId).orElseThrow(()-> new EntityNotFoundException("Profil inexistant"));
-        Experience experience = experienceMapper.toEntity(experienceRequest, profil);
+    public Experience addExperienceToProfil(ExperienceRequest experienceRequest) {
+        Experience experience = experienceMapper.toEntity(experienceRequest, getCurrentUserProfil());
         return experienceRepository.save(experience);
     }
 
     /**
-     * @param profilId 
      * @param speciality
      * @return
      */
     @Override
-    public Speciality addSpecialityToProfil(Long profilId, SpecialityRequest speciality) {
-        Profil profil = profilRepository.findById(profilId)
-                .orElseThrow(() -> new IllegalArgumentException("Profil non trouvé"));
+    public Speciality addSpecialityToProfil(SpecialityRequest speciality) {
 
-        Speciality specialite = specialityMapper.toEntity(speciality, profil);
-        return specialityRepository.save(specialite);
+        return specialityRepository.save(specialityMapper.toEntity(speciality, getCurrentUserProfil()));
+    }
+
+
+    private Profil getCurrentUserProfil() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = auth.getName();
+
+        Utilisateur user = utilisateurRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException("Utilisateur non trouvé avec l'email : " + userEmail));
+
+        if (!(user instanceof Trainer trainer)) {
+            throw new TrainingApiException("Seuls les utilisateurs de type TRAINER ont un profil.", 403);
+        }
+
+        if (trainer.getProfil() == null) {
+            throw new EntityNotFoundException("Profil non trouvé pour l'utilisateur : " + userEmail);
+        }
+
+        return trainer.getProfil();
     }
 }

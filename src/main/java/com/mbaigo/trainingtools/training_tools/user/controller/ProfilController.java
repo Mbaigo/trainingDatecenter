@@ -2,6 +2,7 @@ package com.mbaigo.trainingtools.training_tools.user.controller;
 
 import com.mbaigo.trainingtools.training_tools.config.ApiPathProperties;
 import com.mbaigo.trainingtools.training_tools.config.annotations.RequireAdminRole;
+import com.mbaigo.trainingtools.training_tools.config.annotations.RequireAuthenticated;
 import com.mbaigo.trainingtools.training_tools.config.annotations.RequireTrainerOrAdmin;
 import com.mbaigo.trainingtools.training_tools.config.annotations.RequireTrainerRole;
 import com.mbaigo.trainingtools.training_tools.user.dto.ExperienceRequest;
@@ -43,17 +44,17 @@ public class ProfilController {
         return ResponseEntity.ok(profilService.updateProfilForUser(id, profil));
     }
     @RequireTrainerOrAdmin
-    @PostMapping("/{profilId}/experience")
+    @PostMapping("/experience")
     @Operation(summary = "Créer une experience pour le profil de l'utilisateur connecté")
-    public ResponseEntity<Experience> setExperienceToProfil(@PathVariable Long id, @RequestBody ExperienceRequest experienceRequest) {
-        return ResponseEntity.ok(profilService.addExperienceToProfil(id, experienceRequest));
+    public ResponseEntity<Experience> setExperienceToProfil(@RequestBody ExperienceRequest experienceRequest) {
+        return ResponseEntity.ok(profilService.addExperienceToProfil(experienceRequest));
     }
 
     @RequireTrainerOrAdmin
-    @PostMapping("/{profilId}/speciality")
+    @PostMapping("/speciality")
     @Operation(summary = "Créer une speciality pour le profil de l'utilisateur connecté")
-    public ResponseEntity<Speciality> setSpecialityToProfil(@PathVariable Long profilId, @RequestBody SpecialityRequest specialityRequest) {
-        return ResponseEntity.ok(profilService.addSpecialityToProfil(profilId, specialityRequest));
+    public ResponseEntity<Speciality> setSpecialityToProfil(@RequestBody SpecialityRequest specialityRequest) {
+        return ResponseEntity.ok(profilService.addSpecialityToProfil(specialityRequest));
     }
 
     @RequireAdminRole
@@ -63,7 +64,7 @@ public class ProfilController {
         return ResponseEntity.ok(profilService.findAllProfils());
     }
 
-    @RequireAdminRole
+    @RequireAuthenticated
     @GetMapping("/by-email")
     @Operation(summary = "Le profil d'un utilisateur avec son email")
     public ResponseEntity<Optional<Profil>> getProfilByUtilisateurEmail(@RequestParam @Email String email) {

@@ -16,6 +16,6 @@ public interface ProfilService {
     public Optional<Profil> findByUtilisateurEmail(String email);
     public Optional<Profil> findByUtilisateurPhoneNumber(String phoneNumber);
     public List<Profil> findAllProfils();
-    Experience addExperienceToProfil(Long profilId, ExperienceRequest experienceRequest);
-    Speciality addSpecialityToProfil(Long profilId, SpecialityRequest speciality);
+    Experience addExperienceToProfil(ExperienceRequest experienceRequest);
+    Speciality addSpecialityToProfil(SpecialityRequest speciality);
 }
