@@ -9,9 +9,9 @@ public interface AuthService {
     JwtResponse login(LoginRequest request, String ipAddress, String device);
 
     Utilisateur getUserByEmail(String email);
-    Utilisateur updateDetails(Long userId, UpdateUserDetailsRequest request);
+    Utilisateur updateDetails(UpdateUserDetailsRequest request);
     String generateTokenFromEmail(String email);
     //refresh / logout
     JwtResponse refreshToken(String requestRefreshToken);
-    void logout(Long userId);
+    void logout();
 }

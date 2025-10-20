@@ -6,6 +6,7 @@ import com.mbaigo.trainingtools.training_tools.auth.services.ConnexionHistorySer
 import com.mbaigo.trainingtools.training_tools.auth.token.RefreshToken;
 import com.mbaigo.trainingtools.training_tools.auth.token.services.RefreshTokenService;
 import com.mbaigo.trainingtools.training_tools.exception.TrainingApiException;
+import com.mbaigo.trainingtools.training_tools.security.SecurityUtil;
 import com.mbaigo.trainingtools.training_tools.security.services.jwt_service.JwtUtil;
 import com.mbaigo.trainingtools.training_tools.user.dto.ProfilRequest;
 import com.mbaigo.trainingtools.training_tools.user.entities.admin.Admin;
@@ -25,6 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 @Service @RequiredArgsConstructor
@@ -73,17 +75,24 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Utilisateur updateDetails(Long userId, UpdateUserDetailsRequest request) {
-        Utilisateur user = utilisateurRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
+    public Utilisateur updateDetails(UpdateUserDetailsRequest request) {
+        Utilisateur currentUser = SecurityUtil.getCurrentUser(utilisateurRepository);
+        // Vérification : currentUser est admin OU c'est bien le même utilisateur
+        boolean isAdmin = currentUser.getRoles().stream()
+                .anyMatch(role -> role == Role.ADMIN);
 
-        if (request.getUsername() != null) user.setUsername(request.getUsername());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setPhoneNumber(request.getPhoneNumber());
+        if (!isAdmin && Objects.isNull(currentUser.getId())) {
+            throw new TrainingApiException("Accès refusé : vous ne pouvez modifier que votre propre profil.", 403);
+        }
 
-        user.setEnabled(true);
-        return utilisateurRepository.save(user);
+        if (request.getUsername() != null)
+            currentUser.setUsername(request.getUsername());
+        currentUser.setFirstName(request.getFirstName());
+        currentUser.setLastName(request.getLastName());
+        currentUser.setPhoneNumber(request.getPhoneNumber());
+
+        currentUser.setEnabled(true);
+        return utilisateurRepository.save(currentUser);
     }
 
 
@@ -147,8 +156,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void logout(Long userId) {
-        refreshTokenService.deleteByUtilisateurId(userId);
+    public void logout() {
+        Utilisateur currentUser = SecurityUtil.getCurrentUser(utilisateurRepository);
+        refreshTokenService.deleteByUtilisateurId(currentUser.getId());
         SecurityContextHolder.clearContext();
     }
 

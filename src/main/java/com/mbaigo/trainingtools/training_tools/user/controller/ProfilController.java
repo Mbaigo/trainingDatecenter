@@ -16,11 +16,13 @@ import com.mbaigo.trainingtools.training_tools.user.services.ProfilService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(ApiPathProperties.BASE_API+"user/profils")
@@ -36,24 +38,35 @@ public class ProfilController {
     }
     @RequireTrainerRole
     @PutMapping("/{profilId}")
+    @Operation(summary = "MAJ un profil pour l'utilisateur connecté")
     public ResponseEntity<Profil> updateProfil(@PathVariable Long id, @RequestBody ProfilRequest profil) {
         return ResponseEntity.ok(profilService.updateProfilForUser(id, profil));
     }
     @RequireTrainerOrAdmin
     @PostMapping("/{profilId}/experience")
+    @Operation(summary = "Créer une experience pour le profil de l'utilisateur connecté")
     public ResponseEntity<Experience> setExperienceToProfil(@PathVariable Long id, @RequestBody ExperienceRequest experienceRequest) {
         return ResponseEntity.ok(profilService.addExperienceToProfil(id, experienceRequest));
     }
 
     @RequireTrainerOrAdmin
     @PostMapping("/{profilId}/speciality")
+    @Operation(summary = "Créer une speciality pour le profil de l'utilisateur connecté")
     public ResponseEntity<Speciality> setSpecialityToProfil(@PathVariable Long profilId, @RequestBody SpecialityRequest specialityRequest) {
         return ResponseEntity.ok(profilService.addSpecialityToProfil(profilId, specialityRequest));
     }
 
     @RequireAdminRole
     @GetMapping
+    @Operation(summary = "Tous les profils utilisateurs")
     public ResponseEntity<List<Profil>> getAllProfils() {
         return ResponseEntity.ok(profilService.findAllProfils());
+    }
+
+    @RequireAdminRole
+    @GetMapping("/by-email")
+    @Operation(summary = "Le profil d'un utilisateur avec son email")
+    public ResponseEntity<Optional<Profil>> getProfilByUtilisateurEmail(@RequestParam @Email String email) {
+        return ResponseEntity.ok(profilService.findByUtilisateurEmail(email));
     }
 }

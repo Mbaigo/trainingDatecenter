@@ -22,9 +22,9 @@ public class AuthController {
         return ResponseEntity.status(201).body(authService.register(request));
     }
 
-    @PutMapping("/users/{id}/details")
-    public ResponseEntity<?> updateDetails(@PathVariable Long id, @Valid @RequestBody UpdateUserDetailsRequest request) {
-        return ResponseEntity.ok(authService.updateDetails(id, request));
+    @PutMapping("/users/details")
+    public ResponseEntity<?> updateDetails(@Valid @RequestBody UpdateUserDetailsRequest request) {
+        return ResponseEntity.ok(authService.updateDetails(request));
     }
 
     @PostMapping("/login")
@@ -42,8 +42,8 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestParam Long userId) {
-        authService.logout(userId);
+    public ResponseEntity<Void> logout() {
+        authService.logout();
         return ResponseEntity.noContent().build();
     }
 }
