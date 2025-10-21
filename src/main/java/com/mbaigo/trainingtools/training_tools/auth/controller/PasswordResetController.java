@@ -1,7 +1,6 @@
 package com.mbaigo.trainingtools.training_tools.auth.controller;
 
 import com.mbaigo.trainingtools.training_tools.auth.services.OptService;
-import com.mbaigo.trainingtools.training_tools.auth.services.PasswordResetService;
 import com.mbaigo.trainingtools.training_tools.config.ApiPathProperties;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
