@@ -14,8 +14,7 @@ public class SpecialityMapper {
     public Speciality toEntity(SpecialityRequest dto, Profil profil) {
         if (dto == null) return null;
         Speciality sp = new Speciality();
-        if (dto.getId() != null) sp.setId(dto.getId());
-        sp.setSpeciality(dto.getSpeciality());
+        sp.setTitle(dto.getTitle());
         if (profil != null) sp.setProfil(profil);
         return sp;
     }
@@ -23,9 +22,7 @@ public class SpecialityMapper {
     public SpecialityRequest toDto(Speciality entity) {
         if (entity == null) return null;
         SpecialityRequest dto = new SpecialityRequest();
-        dto.setId(entity.getId());
-        dto.setSpeciality(entity.getSpeciality());
-        dto.setProfilId(entity.getProfil() != null ? entity.getProfil().getId() : null);
+        dto.setTitle(entity.getTitle());
         return dto;
     }
 

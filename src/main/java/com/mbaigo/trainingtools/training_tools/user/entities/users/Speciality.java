@@ -17,7 +17,7 @@ public class Speciality {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String speciality;
+    private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profil_id")

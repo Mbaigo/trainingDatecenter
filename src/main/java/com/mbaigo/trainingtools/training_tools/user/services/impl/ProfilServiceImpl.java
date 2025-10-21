@@ -142,12 +142,31 @@ public class ProfilServiceImpl implements ProfilService {
     }
 
     /**
-     * @param speciality
+     *
+     * @param email
+     * @param title
      * @return
      */
     @Override
-    public Speciality addSpecialityToProfil(SpecialityRequest speciality) {
-        return specialityRepository.save(specialityMapper.toEntity(speciality, getCurrentUserProfil()));
+    public Speciality addSpecialityToProfil(String email,String title) {
+        // 1️⃣ Trouver l'utilisateur
+        Trainer user = (Trainer) utilisateurRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        // 2️⃣ Accéder à son profil
+        Profil profil = user.getProfil();
+        if (profil == null) {
+            throw new RuntimeException("Profil introuvable pour cet utilisateur");
+        }
+
+        // 3️⃣ Créer la spécialité
+        Speciality speciality = new Speciality();
+        speciality.setTitle(title);
+        profilRepository.save(profil);
+        specialityRepository.save(speciality);
+        // 5️⃣ Retourner la spécialité créée
+        return speciality;
+
     }
 
     /**
@@ -156,16 +175,22 @@ public class ProfilServiceImpl implements ProfilService {
      */
     @Override
     public List<Profil> findProfilByCertification(String certification) {
-        return List.of();
+        return profilRepository.findByCertificationContaining(certification.toUpperCase());
     }
 
     /**
      * @param specialityName 
      * @return
      */
+
+
+    /**
+     * @param parcours
+     * @return
+     */
     @Override
-    public List<Profil> findProfilBySpecialityName(String specialityName) {
-        return List.of();
+    public List<Profil> findProfilByParcours(String parcours) {
+        return profilRepository.findByParcoursContaining(parcours);
     }
 
 

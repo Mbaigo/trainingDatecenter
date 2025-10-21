@@ -5,6 +5,7 @@ import com.mbaigo.trainingtools.training_tools.config.annotations.RequireAdminRo
 import com.mbaigo.trainingtools.training_tools.config.annotations.RequireAuthenticated;
 import com.mbaigo.trainingtools.training_tools.config.annotations.RequireTrainerOrAdmin;
 import com.mbaigo.trainingtools.training_tools.config.annotations.RequireTrainerRole;
+import com.mbaigo.trainingtools.training_tools.controller.model.ApiResponse;
 import com.mbaigo.trainingtools.training_tools.user.dto.ExperienceRequest;
 import com.mbaigo.trainingtools.training_tools.user.dto.ProfilRequest;
 import com.mbaigo.trainingtools.training_tools.user.dto.ProfilResponseDto;
@@ -12,14 +13,18 @@ import com.mbaigo.trainingtools.training_tools.user.dto.SpecialityRequest;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Experience;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Profil;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Speciality;
+import com.mbaigo.trainingtools.training_tools.user.entities.users.Trainer;
 import com.mbaigo.trainingtools.training_tools.user.mappers.ProfilMapper;
 import com.mbaigo.trainingtools.training_tools.user.services.ProfilService;
+import com.mbaigo.trainingtools.training_tools.user.services.TrainerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +36,7 @@ import java.util.Optional;
 @SecurityRequirement(name = "bearerAuth")
 public class ProfilController {
     private final ProfilService profilService;
+    private final TrainerService trainerService;
     @RequireTrainerRole
     @PostMapping("/addProfil")
     @Operation(summary = "Créer un profil pour l'utilisateur connecté")
@@ -53,21 +59,107 @@ public class ProfilController {
     @RequireTrainerOrAdmin
     @PostMapping("/speciality")
     @Operation(summary = "Créer une speciality pour le profil de l'utilisateur connecté")
-    public ResponseEntity<Speciality> setSpecialityToProfil(@RequestBody SpecialityRequest specialityRequest) {
-        return ResponseEntity.ok(profilService.addSpecialityToProfil(specialityRequest));
-    }
+    public ResponseEntity<Speciality> setSpecialityToProfil(@RequestBody SpecialityRequest specialityRequest, Authentication authentication) {
+        // 1️⃣ Récupère l'utilisateur connecté
+        String email = authentication.getName();
+
+        // 2️⃣ Délègue au service (sans passer de profilId)
+        Speciality speciality = profilService.addSpecialityToProfil(email, specialityRequest.getTitle());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(speciality); }
 
     @RequireAdminRole
     @GetMapping
     @Operation(summary = "Tous les profils utilisateurs")
-    public ResponseEntity<List<Profil>> getAllProfils() {
-        return ResponseEntity.ok(profilService.findAllProfils());
+    public ResponseEntity<ApiResponse<List<Profil>>> getAllProfils() {
+
+        List<Profil> profils = profilService.findAllProfils();
+        if (profils == null || profils.isEmpty()) {
+            ApiResponse<List<Profil>> response = new ApiResponse<>(
+                    true,
+                    "Aucun Profil trouvé",
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        }
+
+        ApiResponse<List<Profil>> response = new ApiResponse<>(
+                true,
+                "Profils récupérés avec succès",
+                profils
+        );
+
+        return ResponseEntity.ok(response);
     }
 
     @RequireAuthenticated
     @GetMapping("/by-email")
     @Operation(summary = "Le profil d'un utilisateur avec son email")
-    public ResponseEntity<Optional<Profil>> getProfilByUtilisateurEmail(@RequestParam @Email String email) {
-        return ResponseEntity.ok(profilService.findByUtilisateurEmail(email));
+    public ResponseEntity<ApiResponse<Optional<Profil>>> getProfilByUtilisateurEmail(@RequestParam @Email String email) {
+        Optional<Profil> profil = profilService.findByUtilisateurEmail(email);
+        if (profil == null || profil.isEmpty()) {
+            ApiResponse<Optional<Profil>> response = new ApiResponse<>(
+                    true,
+                    "Aucun Profil trouvé",
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        }
+
+        ApiResponse<Optional<Profil>> response = new ApiResponse<>(
+                true,
+                "Profil récupéré avec succès",
+                profil
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+    @RequireAuthenticated
+    @GetMapping("/by-parcours")
+    @Operation(summary = "Le profil des utilisateurs avec un parcours donné")
+    public ResponseEntity<ApiResponse<List<Profil>>> getProfilByParcours(@RequestParam String parcour) {
+        List<Profil> profils = profilService.findProfilByParcours(parcour);
+        if (profils == null || profils.isEmpty()) {
+            ApiResponse<List<Profil>> response = new ApiResponse<>(
+                    true,
+                    "Aucun Profil trouvé",
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        }
+
+        ApiResponse<List<Profil>> response = new ApiResponse<>(
+                true,
+                "Liste des formateurs récupérée avec succès",
+                profils
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+
+    @RequireAuthenticated
+    @GetMapping("/by-certification")
+    @Operation(summary = "Le profil des utilisateurs avec une certification donnée")
+    public ResponseEntity<ApiResponse<List<Profil>>> getProfilByCertificate(@RequestParam String certification) {
+        List<Profil> profils = profilService.findProfilByCertification(certification);
+        if (profils == null || profils.isEmpty()) {
+            ApiResponse<List<Profil>> response = new ApiResponse<>(
+                    true,
+                    "Aucun Profil trouvé",
+                    null
+            );
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        }
+
+        ApiResponse<List<Profil>> response = new ApiResponse<>(
+                true,
+                "Liste des formateurs récupérée avec succès",
+                profils
+        );
+
+        return ResponseEntity.ok(response);
+
     }
 }

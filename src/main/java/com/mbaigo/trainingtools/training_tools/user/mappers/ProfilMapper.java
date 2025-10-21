@@ -49,8 +49,7 @@ public class ProfilMapper {
     public static SpecialityRequest toSpecialityDTO(Speciality sp) {
         if (sp == null) return null;
         return SpecialityRequest.builder()
-                .id(sp.getId())
-                .speciality(sp.getSpeciality())
+                .title(sp.getTitle())
                 .build();
     }
 }
