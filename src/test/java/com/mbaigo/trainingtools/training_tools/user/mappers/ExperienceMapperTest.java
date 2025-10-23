@@ -28,19 +28,18 @@ public class ExperienceMapperTest {
 
         ExperienceRequest dto = mapper.toDto(exp);
         assertNotNull(dto);
-        assertEquals(exp.getId(), dto.getId());
         assertEquals(exp.getJobTitle(), dto.getJobTitle());
         assertEquals(exp.getCompany(), dto.getCompany());
         assertEquals(exp.getLocation(), dto.getLocation());
         assertEquals(exp.getStartDate(), dto.getStartDate());
         assertEquals(exp.getEndDate(), dto.getEndDate());
         assertEquals(exp.getJobDescription(), dto.getJobDescription());
-        assertEquals(profil.getId(), dto.getProfilId());
+        //assertEquals(profil.getId(), dto.getProfilId());
 
         // Convert back to entity using the profil object
         Experience back = mapper.toEntity(dto, profil);
         assertNotNull(back);
-        assertEquals(dto.getId(), back.getId());
+        //assertEquals(dto.getId(), back.getId());
         assertEquals(dto.getJobTitle(), back.getJobTitle());
         assertEquals(dto.getCompany(), back.getCompany());
         assertEquals(dto.getLocation(), back.getLocation());

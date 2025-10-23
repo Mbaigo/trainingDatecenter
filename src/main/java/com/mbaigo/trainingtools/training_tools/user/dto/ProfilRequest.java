@@ -1,12 +1,10 @@
 package com.mbaigo.trainingtools.training_tools.user.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter @Setter @AllArgsConstructor @Builder
+@Getter @Setter @NoArgsConstructor
+@AllArgsConstructor @Builder
 public class ProfilRequest {
     private String certification;
     private String parcours;

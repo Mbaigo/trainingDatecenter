@@ -36,7 +36,6 @@ public class ProfilMapper {
     public static ExperienceRequest toExperienceDTO(Experience exp) {
         if (exp == null) return null;
         return ExperienceRequest.builder()
-                .id(exp.getId())
                 .jobTitle(exp.getJobTitle())
                 .company(exp.getCompany())
                 .location(exp.getLocation())

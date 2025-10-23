@@ -13,7 +13,6 @@ import com.mbaigo.trainingtools.training_tools.user.dto.SpecialityRequest;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Experience;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Profil;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Speciality;
-import com.mbaigo.trainingtools.training_tools.user.entities.users.Trainer;
 import com.mbaigo.trainingtools.training_tools.user.mappers.ProfilMapper;
 import com.mbaigo.trainingtools.training_tools.user.services.ProfilService;
 import com.mbaigo.trainingtools.training_tools.user.services.TrainerService;
@@ -59,13 +58,9 @@ public class ProfilController {
     @RequireTrainerOrAdmin
     @PostMapping("/speciality")
     @Operation(summary = "Créer une speciality pour le profil de l'utilisateur connecté")
-    public ResponseEntity<Speciality> setSpecialityToProfil(@RequestBody SpecialityRequest specialityRequest, Authentication authentication) {
-        // 1️⃣ Récupère l'utilisateur connecté
-        String email = authentication.getName();
-
+    public ResponseEntity<Speciality> setSpecialityToProfil(@RequestBody SpecialityRequest specialityRequest) {
         // 2️⃣ Délègue au service (sans passer de profilId)
-        Speciality speciality = profilService.addSpecialityToProfil(email, specialityRequest.getTitle());
-
+        Speciality speciality = profilService.addSpecialityToProfil(specialityRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(speciality); }
 
     @RequireAdminRole

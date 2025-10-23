@@ -20,6 +20,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 //@MappedSuperclass
 public abstract class Utilisateur implements UserDetails {
     @Id

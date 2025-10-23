@@ -15,7 +15,6 @@ public class ExperienceMapper {
     public Experience toEntity(ExperienceRequest dto, Profil profil) {
         if (dto == null) return null;
         Experience experience = new Experience();
-        if (dto.getId() != null) experience.setId(dto.getId());
         experience.setJobTitle(dto.getJobTitle());
         experience.setCompany(dto.getCompany());
         experience.setLocation(dto.getLocation());
@@ -33,14 +32,12 @@ public class ExperienceMapper {
     public ExperienceRequest toDto(Experience entity) {
         if (entity == null) return null;
         return ExperienceRequest.builder()
-                .id(entity.getId())
                 .jobTitle(entity.getJobTitle())
                 .company(entity.getCompany())
                 .location(entity.getLocation())
                 .startDate(entity.getStartDate())
                 .endDate(entity.getEndDate())
                 .jobDescription(entity.getJobDescription())
-                .profilId(entity.getProfil() != null ? entity.getProfil().getId() : null)
                 .build();
     }
 

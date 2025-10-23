@@ -143,30 +143,14 @@ public class ProfilServiceImpl implements ProfilService {
 
     /**
      *
-     * @param email
-     * @param title
+     * @param specialityRequest
      * @return
      */
     @Override
-    public Speciality addSpecialityToProfil(String email,String title) {
-        // 1️⃣ Trouver l'utilisateur
-        Trainer user = (Trainer) utilisateurRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-
-        // 2️⃣ Accéder à son profil
-        Profil profil = user.getProfil();
-        if (profil == null) {
-            throw new RuntimeException("Profil introuvable pour cet utilisateur");
-        }
-
-        // 3️⃣ Créer la spécialité
-        Speciality speciality = new Speciality();
-        speciality.setTitle(title);
-        profilRepository.save(profil);
-        specialityRepository.save(speciality);
-        // 5️⃣ Retourner la spécialité créée
-        return speciality;
-
+    public Speciality addSpecialityToProfil(SpecialityRequest specialityRequest) {
+        // Créer la spécialité en utilisant le profil de l'utilisateur courant
+        Speciality speciality = specialityMapper.toEntity(specialityRequest, getCurrentUserProfil());
+        return  specialityRepository.save(speciality);
     }
 
     /**

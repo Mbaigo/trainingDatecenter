@@ -13,9 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@Builder @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Profil {
-    @Id
+    @Id @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
