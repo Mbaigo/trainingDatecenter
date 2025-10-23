@@ -12,11 +12,11 @@ class ConnexionHistoryTest {
     @Test
     void testConnexionHistoryConstructorAndGetters() {
         ConnexionHistory history = new ConnexionHistory();
-        history.setIpAddress("192.168.1.1");
-        history.setConnexionTime(LocalDateTime.of(2025, 10, 24, 10, 0));
+        history.setAdresseIP("192.168.1.1");
+        history.setDateConnexion(LocalDateTime.of(2025, 10, 24, 10, 0));
 
-        assertEquals("192.168.1.1", history.getIpAddress());
-        assertEquals(LocalDateTime.of(2025, 10, 24, 10, 0), history.getConnexionTime());
+        assertEquals("192.168.1.1", history.getAdresseIP());
+        assertEquals(LocalDateTime.of(2025, 10, 24, 10, 0), history.getDateConnexion());
     }
 
     @Test

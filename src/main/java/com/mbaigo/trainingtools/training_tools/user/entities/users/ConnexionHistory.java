@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@Builder @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ConnexionHistory {
-    @Id
+    @Id @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

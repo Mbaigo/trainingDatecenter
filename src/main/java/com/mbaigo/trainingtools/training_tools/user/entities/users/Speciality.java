@@ -10,10 +10,10 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Speciality {
 
-    @Id
+    @Id @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
