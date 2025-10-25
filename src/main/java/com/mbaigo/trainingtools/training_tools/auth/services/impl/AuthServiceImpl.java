@@ -13,6 +13,7 @@ import com.mbaigo.trainingtools.training_tools.user.entities.admin.Admin;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.*;
 import com.mbaigo.trainingtools.training_tools.user.repository.user.UtilisateurRepository;
 import com.mbaigo.trainingtools.training_tools.user.services.ProfilService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,18 +41,18 @@ public class AuthServiceImpl implements AuthService {
     private final RefreshTokenService refreshTokenService;
     private final ConnexionHistoryService connexionHistoryService;
     private final ProfilService profilService;
-
-    public Utilisateur register(RegisterFirstRequest request) {
+    public JwtResponse register(RegisterFirstRequest request, HttpServletRequest httpRequest) {
         // ✅ Vérification de la correspondance des mots de passe
         if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new TrainingApiException("Les mots de passe ne correspondent pas.", 400);
         }
+
         // ✅ Vérification si l’email existe déjà
         if (utilisateurRepository.existsByEmail(request.getEmail())) {
             throw new TrainingApiException("Un utilisateur avec cet email existe déjà.", 400);
         }
 
-        // ✅ Détermination du rôle (Enum)
+        // ✅ Création dynamique selon le rôle
         Role role;
         try {
             role = Role.valueOf(request.getRole().toUpperCase());
@@ -59,7 +60,6 @@ public class AuthServiceImpl implements AuthService {
             throw new TrainingApiException("Rôle invalide. Valeurs possibles : ADMIN, TRAINER, LEARNER.", 400);
         }
 
-        // ✅ Création dynamique selon le rôle
         Utilisateur user = UtilisateurFactory.createUser(role);
 
         // ✅ Affectation des attributs communs
@@ -71,8 +71,19 @@ public class AuthServiceImpl implements AuthService {
         user.setDateInscription(LocalDateTime.now());
         user.setRoles(Set.of(role));
 
-        return utilisateurRepository.save(user);
+        utilisateurRepository.save(user);
+
+        // ✅ Auto Login après enregistrement
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail(request.getEmail());
+        loginRequest.setPassword(request.getPassword());
+
+        String ipAddress = httpRequest.getRemoteAddr();
+        String device = httpRequest.getHeader("User-Agent");
+
+        return login(loginRequest, ipAddress, device);
     }
+
 
     @Override
     public Utilisateur updateDetails(UpdateUserDetailsRequest request) {

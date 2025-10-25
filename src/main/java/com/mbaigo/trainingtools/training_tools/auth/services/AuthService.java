@@ -2,9 +2,10 @@ package com.mbaigo.trainingtools.training_tools.auth.services;
 
 import com.mbaigo.trainingtools.training_tools.auth.dto.*;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Utilisateur;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface AuthService {
-    Utilisateur register(RegisterFirstRequest request);
+    JwtResponse register(RegisterFirstRequest request, HttpServletRequest httpRequest);
 
     JwtResponse login(LoginRequest request, String ipAddress, String device);
 

@@ -9,9 +9,9 @@ class SpecialityTest {
     @Test
     void testSpecialityConstructorAndGetters() {
         Speciality speciality = new Speciality();
-        speciality.setName("Java Development");
+        speciality.setTitle("Java Development");
 
-        assertEquals("Java Development", speciality.getName());
+        assertEquals("Java Development", speciality.getTitle());
     }
 
     @Test
