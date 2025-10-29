@@ -18,8 +18,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerStep1(@Valid @RequestBody RegisterFirstRequest request) {
-        return ResponseEntity.status(201).body(authService.register(request));
+    public ResponseEntity<?> registerStep1(@Valid @RequestBody RegisterFirstRequest request,HttpServletRequest httpRequest) {
+        return ResponseEntity.status(201).body(authService.register(request, httpRequest));
     }
 
     @PutMapping("/users/details")

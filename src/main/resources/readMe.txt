@@ -49,3 +49,18 @@ com.mbaigo.trainingtools.training_tools
 │           └── ConnexionHistoryServiceImpl.java
 └── exception
     └── GlobalExceptionHandler.java
+
+    PROFIL LEARNER
+    🧠 Bonus : Vision UX (façon Coursera)
+
+    🎓 Après inscription → “Aide-nous à créer ton plan d’étude”
+
+    🔍 Choix du domaine → “Dans quel domaine veux-tu te spécialiser ?”
+
+    🕒 Choix du rythme → “Combien d’heures par semaine peux-tu y consacrer ?”
+
+    🎯 Objectif → “Quel est ton objectif final ?”
+
+    🧩 Génération automatique du LearningPlan initial
+
+    ✅ Sauvegarde + redirection vers un tableau de bord de progressio

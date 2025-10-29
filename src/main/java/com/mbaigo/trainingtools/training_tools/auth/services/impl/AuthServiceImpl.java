@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenService;
     private final ConnexionHistoryService connexionHistoryService;
-    private final ProfilService profilService;
+
     public JwtResponse register(RegisterFirstRequest request, HttpServletRequest httpRequest) {
         // ✅ Vérification de la correspondance des mots de passe
         if (!request.getPassword().equals(request.getConfirmPassword())) {
