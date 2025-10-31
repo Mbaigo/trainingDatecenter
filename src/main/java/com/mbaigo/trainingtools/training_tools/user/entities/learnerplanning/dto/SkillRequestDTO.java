@@ -1,4 +1,4 @@
-package com.mbaigo.trainingtools.training_tools.user.dto;
+package com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

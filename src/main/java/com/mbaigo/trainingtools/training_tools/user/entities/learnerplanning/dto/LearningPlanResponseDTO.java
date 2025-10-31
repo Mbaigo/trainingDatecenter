@@ -1,14 +1,15 @@
-package com.mbaigo.trainingtools.training_tools.user.dto;
+package com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.dto;
 
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-@Setter @Getter @Builder @AllArgsConstructor @NoArgsConstructor
+
+@Builder @AllArgsConstructor @Getter @Setter @NoArgsConstructor
 public class LearningPlanResponseDTO {
     private Long id;
-    private String domain;
+    private String domaine;  // 👈 au lieu de String domain
     private String goal;
     private Integer durationInMonths;
     private Integer hoursPerWeek;

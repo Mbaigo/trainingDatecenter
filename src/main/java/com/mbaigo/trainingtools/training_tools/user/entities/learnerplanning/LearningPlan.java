@@ -1,5 +1,7 @@
-package com.mbaigo.trainingtools.training_tools.user.entities.users;
+package com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning;
 
+import com.mbaigo.trainingtools.training_tools.user.entities.users.Learner;
+import com.mbaigo.trainingtools.training_tools.user.entities.users.Skill;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -29,7 +31,7 @@ public class LearningPlan {
     @Future(message = "La date d’objectif doit être dans le futur.")
     private LocalDate targetDate; // Exemple : 2025-12-31
 
-    private String domain;
+    private Domaine domain;
     private Integer durationInMonths;
     private Integer hoursPerWeek;
     private String currentLevel;
@@ -50,6 +52,11 @@ public class LearningPlan {
     // ✅ Liste des compétences à acquérir
     @OneToMany(mappedBy = "learningPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Skill> skills = new ArrayList<>();
+// le domaine du plan d'etude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "domaine_id")
+    private Domaine domaine;
+
 
     public void addSkill(Skill skill) {
         skills.add(skill);

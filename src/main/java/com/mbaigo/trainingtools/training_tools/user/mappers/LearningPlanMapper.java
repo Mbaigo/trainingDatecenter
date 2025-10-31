@@ -1,43 +1,20 @@
 package com.mbaigo.trainingtools.training_tools.user.mappers;
 
-import com.mbaigo.trainingtools.training_tools.user.dto.LearningPlanRequestDTO;
-import com.mbaigo.trainingtools.training_tools.user.dto.LearningPlanResponseDTO;
-import com.mbaigo.trainingtools.training_tools.user.dto.SkillRequestDTO;
-import com.mbaigo.trainingtools.training_tools.user.dto.SkillResponseDTO;
+import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.Domaine;
+import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.dto.LearningPlanRequestDTO;
+import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.dto.LearningPlanResponseDTO;
+import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.dto.SkillRequestDTO;
+import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.dto.SkillResponseDTO;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Learner;
-import com.mbaigo.trainingtools.training_tools.user.entities.users.LearningPlan;
+import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.LearningPlan;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Skill;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class LearningPlanMapper {
-
-    public LearningPlanResponseDTO toResponseDTO(LearningPlan plan) {
-        if (plan == null) return null;
-
-        LearningPlanResponseDTO dto = new LearningPlanResponseDTO();
-        dto.setId(plan.getId());
-        dto.setDomain(plan.getDomain());
-        dto.setGoal(plan.getGoal());
-        dto.setDurationInMonths(plan.getDurationInMonths());
-        dto.setHoursPerWeek(plan.getHoursPerWeek());
-        dto.setCurrentLevel(plan.getCurrentLevel());
-        dto.setTargetLevel(plan.getTargetLevel());
-        dto.setPriority(plan.getPriority());
-        dto.setCreatedAt(plan.getCreatedAt());
-
-        if (plan.getSkills() != null) {
-            dto.setSkills(
-                    plan.getSkills().stream()
-                            .map(this::toSkillResponseDTO)
-                            .toList()
-            );
-        }
-
-        return dto;
-    }
 
     public SkillResponseDTO toSkillResponseDTO(Skill skill) {
         if (skill == null) return null;
@@ -48,12 +25,30 @@ public class LearningPlanMapper {
         return dto;
     }
 
-    public LearningPlan toEntity(LearningPlanRequestDTO dto, Learner learner) {
+    public static LearningPlanResponseDTO toDTO(LearningPlan plan) {
+        if (plan == null) return null;
+
+        return LearningPlanResponseDTO.builder()
+                .id(plan.getId())
+                .domaine(plan.getDomaine() != null ? plan.getDomaine().getName() : null)
+                .goal(plan.getGoal())
+                .durationInMonths(plan.getDurationInMonths())
+                .hoursPerWeek(plan.getHoursPerWeek())
+                .currentLevel(plan.getCurrentLevel())
+                .targetLevel(plan.getTargetLevel())
+                .priority(plan.getPriority())
+                .createdAt(plan.getCreatedAt())
+                .skills(plan.getSkills().stream()
+                        .map(SkillMapper::toDTO)
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+    public static LearningPlan toEntity(LearningPlanRequestDTO dto, Domaine domaine) {
         if (dto == null) return null;
 
         LearningPlan plan = new LearningPlan();
-        plan.setLearner(learner);
-        plan.setDomain(dto.getDomain());
+        plan.setDomaine(domaine);
         plan.setGoal(dto.getGoal());
         plan.setDurationInMonths(dto.getDurationInMonths());
         plan.setHoursPerWeek(dto.getHoursPerWeek());
@@ -62,11 +57,10 @@ public class LearningPlanMapper {
         plan.setPriority(dto.getPriority());
 
         if (dto.getSkills() != null) {
-            List<Skill> skills = dto.getSkills().stream()
-                    .map(skillDTO -> toSkillEntity(skillDTO, plan))
-                    .toList();
-            skills.forEach(skill -> skill.setLearningPlan(plan));
-            plan.setSkills(skills);
+            dto.getSkills().forEach(skillDTO -> {
+                Skill skill = SkillMapper.toEntity(skillDTO);
+                plan.addSkill(skill);
+            });
         }
 
         return plan;
