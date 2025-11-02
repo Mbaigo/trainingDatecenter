@@ -1,9 +1,11 @@
 package com.mbaigo.trainingtools.training_tools.domain;
 
 import com.mbaigo.trainingtools.training_tools.transaction.EvaluateTraining;
+import com.mbaigo.trainingtools.training_tools.transaction.InscriptionTraining;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Trainer;
 import jakarta.persistence.*;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -42,6 +44,7 @@ public class Training {
     @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Module> modules;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "training", cascade = CascadeType.ALL)
-    private List<EvaluateTraining> evaluations;
+    private List<InscriptionTraining> inscriptions;
 }

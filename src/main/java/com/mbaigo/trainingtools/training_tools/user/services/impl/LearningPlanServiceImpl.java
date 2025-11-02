@@ -77,15 +77,6 @@ public class LearningPlanServiceImpl implements LearningPlanService {
             plan.setDomaine(domaine);
         }
 
-        // 🔹 Mettre à jour les compétences (optionnel)
-        if (dto.getSkills() != null && !dto.getSkills().isEmpty()) {
-            plan.getSkills().clear();
-            dto.getSkills().forEach(skillDTO -> {
-                Skill skill = SkillMapper.toEntity(skillDTO);
-                skill.setLearningPlan(plan);
-                plan.getSkills().add(skill);
-            });
-        }
 
         plan.setUpdatedAt(LocalDateTime.now());
         LearningPlan updated = learningPlanRepository.save(plan);

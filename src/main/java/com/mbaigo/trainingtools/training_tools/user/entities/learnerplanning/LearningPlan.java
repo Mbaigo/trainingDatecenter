@@ -31,7 +31,6 @@ public class LearningPlan {
     @Future(message = "La date d’objectif doit être dans le futur.")
     private LocalDate targetDate; // Exemple : 2025-12-31
 
-    private Domaine domain;
     private Integer durationInMonths;
     private Integer hoursPerWeek;
     private String currentLevel;
@@ -49,18 +48,10 @@ public class LearningPlan {
     @JoinColumn(name = "learner_id", unique = true)
     private Learner learner;
 
-    // ✅ Liste des compétences à acquérir
-    @OneToMany(mappedBy = "learningPlan", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Skill> skills = new ArrayList<>();
 // le domaine du plan d'etude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "domaine_id")
     private Domaine domaine;
 
-
-    public void addSkill(Skill skill) {
-        skills.add(skill);
-        skill.setLearningPlan(this);
-    }
 }
 

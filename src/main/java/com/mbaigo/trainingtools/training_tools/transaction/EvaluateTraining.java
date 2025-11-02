@@ -20,7 +20,7 @@ public class EvaluateTraining {
     @JoinColumn(name = "learner_id")
     private Learner learner;
 
-    @ManyToOne
-    @JoinColumn(name = "training_id")
-    private Training training;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inscription_id", unique = true, nullable = false)
+    private InscriptionTraining inscriptionTraining;
 }

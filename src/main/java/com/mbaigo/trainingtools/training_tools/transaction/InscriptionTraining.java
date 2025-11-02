@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity @AllArgsConstructor @NoArgsConstructor @Setter @Getter @Builder
 public class InscriptionTraining {
     @Id
@@ -24,4 +26,10 @@ public class InscriptionTraining {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "progression_id")
     private Progression progression;
+
+    @OneToOne(mappedBy = "inscriptionTraining", cascade = CascadeType.ALL)
+    private Payment payment;
+
+    @OneToOne(mappedBy = "inscriptionTraining", cascade = CascadeType.ALL)
+    private EvaluateTraining evaluation;
 }

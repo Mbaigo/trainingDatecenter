@@ -1,10 +1,12 @@
 package com.mbaigo.trainingtools.training_tools.user.entities.users;
 
+import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.Domaine;
 import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.LearningPlan;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import net.minidev.json.annotate.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -35,8 +37,9 @@ public class Skill {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "learning_plan_id")
-    private LearningPlan learningPlan;
+    @JsonIgnore
+   @ManyToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "domaine_id")
+    private Domaine domaine;
 }
 

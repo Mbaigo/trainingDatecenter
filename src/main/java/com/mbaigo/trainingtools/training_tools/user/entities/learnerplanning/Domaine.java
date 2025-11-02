@@ -1,5 +1,6 @@
 package com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning;
 
+import com.mbaigo.trainingtools.training_tools.user.entities.users.Skill;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -39,6 +40,8 @@ public class Domaine {
 
     @OneToMany(mappedBy = "domaine", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LearningPlan> learningPlans = new ArrayList<>();
+    @OneToMany(mappedBy = "domaine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Skill> skills = new ArrayList<>();
 
     // 🔹 Méthode utilitaire (optionnelle)
     public void addLearningPlan(LearningPlan plan) {
