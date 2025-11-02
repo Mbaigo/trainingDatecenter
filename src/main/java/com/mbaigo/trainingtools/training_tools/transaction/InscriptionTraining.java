@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity @AllArgsConstructor @NoArgsConstructor @Setter @Getter @Builder
@@ -23,9 +24,8 @@ public class InscriptionTraining {
     @JoinColumn(name = "training_id")
     private Training  training;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "progression_id")
-    private Progression progression;
+    @OneToMany(mappedBy = "inscriptionTraining", cascade = CascadeType.ALL)
+    private List<Progression> progressions = new ArrayList<>();
 
     @OneToOne(mappedBy = "inscriptionTraining", cascade = CascadeType.ALL)
     private Payment payment;

@@ -24,5 +24,5 @@ public class Module {
     private List<Lecon> lecons;
 
     @OneToOne(mappedBy = "module", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Quiz quiz;
+    private ModuleQuiz quiz;
 }

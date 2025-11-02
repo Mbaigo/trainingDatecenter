@@ -5,7 +5,7 @@ import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.dto
 import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.dto.LearningPlanResponseDTO;
 import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.dto.SkillResponseDTO;
 import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.LearningPlan;
-import com.mbaigo.trainingtools.training_tools.user.entities.users.Skill;
+import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.Skill;
 import org.springframework.stereotype.Component;
 
 

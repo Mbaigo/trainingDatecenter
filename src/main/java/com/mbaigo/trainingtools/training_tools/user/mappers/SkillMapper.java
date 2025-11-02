@@ -2,7 +2,7 @@ package com.mbaigo.trainingtools.training_tools.user.mappers;
 
 import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.dto.SkillRequestDTO;
 import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.dto.SkillResponseDTO;
-import com.mbaigo.trainingtools.training_tools.user.entities.users.Skill;
+import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.Skill;
 
 import java.time.format.DateTimeFormatter;
 

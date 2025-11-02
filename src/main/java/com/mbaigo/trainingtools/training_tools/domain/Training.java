@@ -25,7 +25,7 @@ public class Training {
     private String niveau; // Débutant, Intermédiaire, Avancé
     private BigDecimal prix;
     private LocalDateTime createdAt;
-    private boolean status = false;
+    private boolean isValidated = false;
 
     @ManyToOne
     @JoinColumn(name = "trainer")

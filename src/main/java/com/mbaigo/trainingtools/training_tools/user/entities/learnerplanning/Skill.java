@@ -1,7 +1,5 @@
-package com.mbaigo.trainingtools.training_tools.user.entities.users;
+package com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning;
 
-import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.Domaine;
-import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.LearningPlan;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

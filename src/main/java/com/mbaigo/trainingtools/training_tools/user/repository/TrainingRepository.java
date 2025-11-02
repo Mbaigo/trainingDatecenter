@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TrainingRepository extends JpaRepository<Training, Long> {
     // Derived query: find by status with sorting
-    List<Training> findAllByStatusOrderByCreatedAtDesc(Boolean status);
+    List<Training> findAllByIsValidated(Boolean status);
     List<Training> findByTitle(String title);
 
 

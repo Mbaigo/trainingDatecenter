@@ -1,6 +1,5 @@
 package com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning;
 
-import com.mbaigo.trainingtools.training_tools.user.entities.users.Skill;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

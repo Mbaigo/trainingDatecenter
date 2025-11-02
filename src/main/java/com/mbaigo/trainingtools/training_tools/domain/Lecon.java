@@ -23,4 +23,6 @@ public class Lecon {
 
     @OneToMany(mappedBy = "lecon", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ressource> ressources;
+    @OneToOne(mappedBy = "lecon", cascade = CascadeType.ALL, orphanRemoval = true)
+    private LeconQuiz quiz;
 }

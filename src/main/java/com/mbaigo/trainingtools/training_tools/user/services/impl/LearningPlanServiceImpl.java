@@ -6,10 +6,8 @@ import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.Lea
 import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.dto.LearningPlanRequestDTO;
 import com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning.dto.LearningPlanResponseDTO;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Learner;
-import com.mbaigo.trainingtools.training_tools.user.entities.users.Skill;
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Utilisateur;
 import com.mbaigo.trainingtools.training_tools.user.mappers.LearningPlanMapper;
-import com.mbaigo.trainingtools.training_tools.user.mappers.SkillMapper;
 import com.mbaigo.trainingtools.training_tools.user.repository.learning.DomaineRepository;
 import com.mbaigo.trainingtools.training_tools.user.repository.learning.LearningPlanRepository;
 import com.mbaigo.trainingtools.training_tools.user.repository.user.UtilisateurRepository;

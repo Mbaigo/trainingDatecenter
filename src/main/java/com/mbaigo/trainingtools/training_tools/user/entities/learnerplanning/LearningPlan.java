@@ -1,7 +1,6 @@
 package com.mbaigo.trainingtools.training_tools.user.entities.learnerplanning;
 
 import com.mbaigo.trainingtools.training_tools.user.entities.users.Learner;
-import com.mbaigo.trainingtools.training_tools.user.entities.users.Skill;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -12,8 +11,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter @Setter

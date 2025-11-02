@@ -16,10 +16,6 @@ public class EvaluateTraining {
     @Column(columnDefinition = "TEXT")
     private String commentaire;
 
-    @ManyToOne
-    @JoinColumn(name = "learner_id")
-    private Learner learner;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inscription_id", unique = true, nullable = false)
     private InscriptionTraining inscriptionTraining;
