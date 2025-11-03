@@ -1,0 +1,13 @@
+[35msrc/main/java/com/mbaigo/trainingtools/training_tools/admin/TrainingValidation.java[m
+[35msrc/main/java/com/mbaigo/trainingtools/training_tools/controller/TrainerController.java[m
+[35msrc/main/java/com/mbaigo/trainingtools/training_tools/dto/TrainingDto.java[m
+[35msrc/main/java/com/mbaigo/trainingtools/training_tools/repository/LearnerRepository.java[m
+[35msrc/main/java/com/mbaigo/trainingtools/training_tools/repository/TrainerRepository.java[m
+[35msrc/main/java/com/mbaigo/trainingtools/training_tools/repository/TrainingRepository.java[m
+[35msrc/main/java/com/mbaigo/trainingtools/training_tools/services/TrainerService.java[m
+[35msrc/main/java/com/mbaigo/trainingtools/training_tools/services/impl/TrainerServiceImpl.java[m
+[35msrc/main/java/com/mbaigo/trainingtools/training_tools/transaction/EvaluateTraining.java[m
+[35msrc/main/java/com/mbaigo/trainingtools/training_tools/transaction/Favory.java[m
+[35msrc/main/java/com/mbaigo/trainingtools/training_tools/transaction/InscriptionTraining.java[m
+[35msrc/main/java/com/mbaigo/trainingtools/training_tools/transaction/Payment.java[m
+[35msrc/main/java/com/mbaigo/trainingtools/training_tools/transaction/Progression.java[m
